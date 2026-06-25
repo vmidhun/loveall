@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { User, UserRole, AuthContext as AuthContextInterface } from '../types';
 
+/* eslint-disable react-refresh/only-export-components */
+
 /**
  * AuthContext
  * Manages global authentication state for the application
@@ -71,6 +73,19 @@ const USERS_DATA = [
   }
 ] as const;
 
+interface UserData {
+  id: string;
+  username: string;
+  password: string;
+  role: UserRole;
+  name: string;
+  email?: string | null;
+  profilePhoto?: string | null;
+  specialization?: string | null;
+  createdAt: string;
+  lastActive: string;
+}
+
 // Create the Auth Context
 export const AuthContext = createContext<AuthContextInterface | undefined>(undefined);
 
@@ -92,9 +107,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     if (storedToken && storedUser && storedRole) {
       try {
+        // Create a local state object to batch updates
+        const parsedUser = JSON.parse(storedUser) as User;
+        const parsedRole = storedRole as UserRole;
+        
+        // Batch the state updates
+        setUser(parsedUser);
+        setRole(parsedRole);
         setToken(storedToken);
-        setUser(JSON.parse(storedUser));
-        setRole(storedRole as UserRole);
       } catch (error) {
         console.error('Failed to restore auth state from localStorage:', error);
         // Clear invalid stored data
@@ -115,21 +135,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (username: string, password: string): Promise<void> => {
     try {
       // Type cast users data
-      const users = USERS_DATA as Array<{
-        id: string;
-        username: string;
-        password: string;
-        role: UserRole;
-        name: string;
-        email?: string;
-        profilePhoto?: string;
-        specialization?: string;
-        createdAt: string;
-        lastActive: string;
-      }> | unknown;
+      const users = USERS_DATA as unknown as UserData[];
 
       // Find user by username
-      const foundUser = (users as any[]).find((u) => u.username === username);
+      const foundUser = users.find((u) => u.username === username);
 
       // Validate credentials
       if (!foundUser || foundUser.password !== password) {
@@ -210,5 +219,3 @@ export const useAuth = (): AuthContextInterface => {
 
   return context;
 };
-
-export default AuthContext;

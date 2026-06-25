@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 import { AuthProvider, useAuth } from './AuthContext';
@@ -585,10 +586,7 @@ describe('AuthContext', () => {
     });
 
     it('should not render children during initial loading', () => {
-      let renderCount = 0;
-
       const TestComponent = () => {
-        renderCount++;
         return <div>Content</div>;
       };
 
@@ -598,7 +596,7 @@ describe('AuthContext', () => {
         </AuthProvider>
       );
 
-      // Component should render at least once after loading completes
+      // Component should render after loading completes
       expect(container).toBeDefined();
     });
   });
