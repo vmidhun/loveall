@@ -155,9 +155,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         username: foundUser.username,
         role: foundUser.role,
         name: foundUser.name,
-        email: foundUser.email,
-        profilePhoto: foundUser.profilePhoto,
-        specialization: foundUser.specialization,
+        email: foundUser.email ?? undefined,
+        profilePhoto: foundUser.profilePhoto ?? undefined,
+        specialization: foundUser.specialization ?? undefined,
         createdAt: new Date(foundUser.createdAt),
         lastActive: new Date(foundUser.lastActive),
       };
