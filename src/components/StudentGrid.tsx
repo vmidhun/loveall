@@ -1,0 +1,44 @@
+import React from 'react';
+import type { Student } from '../types';
+import StudentCard from './StudentCard';
+import './StudentGrid.css';
+
+/**
+ * StudentGrid Component
+ * Displays students in a responsive grid layout with 4 columns on desktop,
+ * 2 on tablet, and 1 on mobile
+ */
+
+interface StudentGridProps {
+  students: Student[];
+  onStudentClick?: (studentId: string) => void;
+}
+
+export const StudentGrid: React.FC<StudentGridProps> = ({ students, onStudentClick }) => {
+  if (!students || students.length === 0) {
+    return (
+      <div className="student-grid-empty">
+        <div className="empty-state">
+          <div className="empty-icon">👥</div>
+          <h3>No Students Found</h3>
+          <p>No students to display. Start by adding your first student.</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="student-grid">
+      {students.map((student) => (
+        <div key={student.id} className="student-grid-item">
+          <StudentCard
+            student={student}
+            onClick={() => onStudentClick?.(student.id)}
+          />
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default StudentGrid;

@@ -1,0 +1,124 @@
+/* HeadCoachDashboard Page Styles */
+
+.head-coach-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Welcome Section */
+.dashboard-welcome {
+  margin-bottom: 8px;
+}
+
+.welcome-title {
+  margin: 0 0 8px 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--slate-100, #f1f4f6);
+  line-height: 1.2;
+}
+
+.welcome-subtitle {
+  margin: 0;
+  font-size: 16px;
+  color: var(--slate-400, #9ca8b3);
+  line-height: 1.5;
+}
+
+/* Stat Cards Grid */
+.stat-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* Dashboard Section */
+.dashboard-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-title {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--slate-100, #f1f4f6);
+  line-height: 1.4;
+}
+
+/* Responsive breakpoints */
+
+/* Tablet: 2 columns for stat cards */
+@media (max-width: 1200px) {
+  .stat-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+/* Small tablet: 2 columns for stat cards */
+@media (max-width: 768px) {
+  .head-coach-dashboard {
+    gap: 24px;
+  }
+
+  .stat-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .welcome-title {
+    font-size: 24px;
+  }
+
+  .welcome-subtitle {
+    font-size: 14px;
+  }
+
+  .section-title {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+}
+
+/* Mobile: 1 column for stat cards */
+@media (max-width: 480px) {
+  .head-coach-dashboard {
+    gap: 20px;
+  }
+
+  .stat-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .welcome-title {
+    font-size: 20px;
+  }
+
+  .welcome-subtitle {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .section-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+}
+
+/* Light mode support */
+@media (prefers-color-scheme: light) {
+  .welcome-title {
+    color: var(--slate-900, #131820);
+  }
+
+  .welcome-subtitle {
+    color: var(--slate-600, #4a5662);
+  }
+
+  .section-title {
+    color: var(--slate-900, #131820);
+  }
+}

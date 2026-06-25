@@ -1,0 +1,254 @@
+/* StudentCard Component Styles */
+
+.student-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 10px;
+  background-color: var(--slate-900, #131820);
+  border: 1px solid var(--slate-800, #1f262e);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.student-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  border-color: var(--slate-700, #333d47);
+}
+
+.student-card:focus-visible {
+  outline: 2px solid #b8e135;
+  outline-offset: 2px;
+}
+
+.student-card:active {
+  transform: translateY(-2px);
+}
+
+/* Avatar */
+.student-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 18px;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.student-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* Avatar color variants */
+.student-avatar-blue {
+  background-color: #3a8ef6;
+}
+
+.student-avatar-orange {
+  background-color: #f5a623;
+}
+
+.student-avatar-purple {
+  background-color: #8b5cf6;
+}
+
+.student-avatar-green {
+  background-color: #10b981;
+}
+
+/* Name */
+.student-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--slate-100, #f1f4f6);
+  line-height: 1.4;
+}
+
+/* Batch Label */
+.student-batch {
+  margin: 0;
+  font-size: 12px;
+  color: var(--slate-400, #9ca8b3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Skill Level Badge */
+.skill-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  width: fit-content;
+}
+
+.skill-badge-blue {
+  background-color: rgba(58, 142, 246, 0.2);
+  color: #3a8ef6;
+}
+
+.skill-badge-orange {
+  background-color: rgba(245, 166, 35, 0.2);
+  color: #f5a623;
+}
+
+.skill-badge-purple {
+  background-color: rgba(139, 92, 246, 0.2);
+  color: #8b5cf6;
+}
+
+.skill-badge-green {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+
+/* Progress Bar */
+.progress-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background-color: var(--slate-800, #1f262e);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.progress-bar-fill-blue {
+  background-color: #3a8ef6;
+}
+
+.progress-bar-fill-orange {
+  background-color: #f5a623;
+}
+
+.progress-bar-fill-purple {
+  background-color: #8b5cf6;
+}
+
+.progress-bar-fill-green {
+  background-color: #10b981;
+}
+
+.progress-label {
+  font-size: 11px;
+  color: var(--slate-400, #9ca8b3);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* BAID Indicator */
+.baid-indicator {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  background-color: #10b981;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .student-card {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .student-avatar {
+    width: 48px;
+    height: 48px;
+    font-size: 16px;
+  }
+
+  .student-name {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .student-card {
+    padding: 12px;
+  }
+
+  .student-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .student-name {
+    font-size: 13px;
+  }
+
+  .student-batch {
+    font-size: 10px;
+  }
+}
+
+/* Light mode support */
+@media (prefers-color-scheme: light) {
+  .student-card {
+    background-color: #ffffff;
+    border-color: var(--slate-200, #e4e9ec);
+  }
+
+  .student-card:hover {
+    border-color: var(--slate-300, #d1d9de);
+  }
+
+  .student-name {
+    color: var(--slate-900, #131820);
+  }
+
+  .student-batch {
+    color: var(--slate-500, #6b7885);
+  }
+
+  .progress-bar {
+    background-color: var(--slate-200, #e4e9ec);
+  }
+
+  .progress-label {
+    color: var(--slate-600, #4a5662);
+  }
+}
