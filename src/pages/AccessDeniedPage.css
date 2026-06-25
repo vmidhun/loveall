@@ -1,0 +1,73 @@
+/* AccessDeniedPage Styles */
+
+:root {
+  --primary-color: #b8e135;
+  --slate-50: #f8fafb;
+  --slate-100: #f1f4f6;
+  --slate-900: #131820;
+  --slate-950: #0a0d11;
+  --danger-color: #e8394a;
+}
+
+.access-denied-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--slate-950);
+  color: var(--slate-100);
+  padding: 24px;
+}
+
+.access-denied-container {
+  text-align: center;
+  max-width: 500px;
+}
+
+.access-denied-icon {
+  font-size: 64px;
+  margin-bottom: 24px;
+}
+
+.access-denied-page h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--danger-color);
+}
+
+.access-denied-page p {
+  font-size: 16px;
+  color: var(--slate-400);
+  margin-bottom: 32px;
+}
+
+.btn-back {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: var(--primary-color);
+  color: var(--slate-950);
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-back:hover {
+  background-color: #a8d124;
+  transform: translateY(-2px);
+}
+
+.btn-back:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+@media (prefers-color-scheme: light) {
+  .access-denied-page {
+    background-color: var(--slate-50);
+    color: var(--slate-900);
+  }
+}
