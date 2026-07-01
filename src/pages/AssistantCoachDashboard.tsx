@@ -5,11 +5,18 @@ import StatCard from '../components/StatCard';
 import StudentGrid from '../components/StudentGrid';
 import SearchInput from '../components/SearchInput';
 import FilterBar from '../components/FilterBar';
+import FeeAlerts from '../components/FeeAlerts';
+import RecentActivity from '../components/RecentActivity';
 import type { FilterValues } from '../components/FilterBar';
 import { useAuth } from '../contexts/AuthContext';
 import { calculateDashboardStats } from '../utils/dashboardUtils';
+import { getOverdueFeesByStudent } from '../utils/feeUtils';
+import { generateActivityFeed } from '../utils/activityUtils';
 import STUDENTS_DATA from '../data/students.json';
-import type { Student } from '../types';
+import FEES_DATA from '../data/fees.json';
+import SKILL_ASSESSMENTS_DATA from '../data/skillAssessments.json';
+import TRAINING_LOGS_DATA from '../data/trainingLogs.json';
+import type { Student, FeeRecord, SkillAssessment, TrainingLog } from '../types';
 
 /**
  * AssistantCoachDashboard Page
@@ -27,6 +34,36 @@ const parseStudents = (data: unknown): Student[] => {
     dateOfBirth: new Date(s.dateOfBirth as string),
     createdAt: new Date(s.createdAt as string),
     updatedAt: new Date(s.updatedAt as string),
+  }));
+};
+
+// Parse fees with proper date types
+const parseFees = (data: unknown): FeeRecord[] => {
+  const feeArray = data as Array<Record<string, unknown>>;
+  return feeArray.map((f) => ({
+    ...(f as unknown as FeeRecord),
+    dueDate: new Date(f.dueDate as string),
+    paidDate: f.paidDate ? new Date(f.paidDate as string) : undefined,
+    createdAt: new Date(f.createdAt as string),
+    updatedAt: new Date(f.updatedAt as string),
+  }));
+};
+
+// Parse skill assessments with proper date types
+const parseAssessments = (data: unknown): SkillAssessment[] => {
+  const assessmentArray = data as Array<Record<string, unknown>>;
+  return assessmentArray.map((a) => ({
+    ...(a as unknown as SkillAssessment),
+    recordedAt: new Date(a.recordedAt as string),
+  }));
+};
+
+// Parse training logs with proper date types
+const parseTrainingLogs = (data: unknown): TrainingLog[] => {
+  const logArray = data as Array<Record<string, unknown>>;
+  return logArray.map((l) => ({
+    ...(l as unknown as TrainingLog),
+    recordedAt: new Date(l.recordedAt as string),
   }));
 };
 
@@ -96,6 +133,42 @@ export const AssistantCoachDashboard: React.FC = () => {
   const assignedStudents = useMemo(
     () => allStudents.filter((student) => student.assignedCoachId === user?.id),
     [allStudents, user?.id]
+  );
+
+  // Parse fees and filter to assigned students only
+  const allFees = useMemo(() => parseFees(FEES_DATA), []);
+  const assignedStudentIds = useMemo(
+    () => new Set(assignedStudents.map((s) => s.id)),
+    [assignedStudents]
+  );
+  const assignedFees = useMemo(
+    () => allFees.filter((fee) => assignedStudentIds.has(fee.studentId)),
+    [allFees, assignedStudentIds]
+  );
+
+  // Parse assessments and training logs, filter to assigned students
+  const allAssessments = useMemo(() => parseAssessments(SKILL_ASSESSMENTS_DATA), []);
+  const assignedAssessments = useMemo(
+    () => allAssessments.filter((a) => assignedStudentIds.has(a.studentId)),
+    [allAssessments, assignedStudentIds]
+  );
+
+  const allTrainingLogs = useMemo(() => parseTrainingLogs(TRAINING_LOGS_DATA), []);
+  const assignedTrainingLogs = useMemo(
+    () => allTrainingLogs.filter((l) => assignedStudentIds.has(l.studentId)),
+    [allTrainingLogs, assignedStudentIds]
+  );
+
+  // Calculate overdue fees for assigned students only
+  const overdueFees = useMemo(
+    () => getOverdueFeesByStudent(assignedFees, assignedStudents),
+    [assignedFees, assignedStudents]
+  );
+
+  // Generate recent activity feed for assigned students only
+  const recentActivities = useMemo(
+    () => generateActivityFeed(assignedAssessments, assignedTrainingLogs, assignedStudents, 10),
+    [assignedAssessments, assignedTrainingLogs, assignedStudents]
   );
 
   // Calculate dashboard statistics based on assigned students only
@@ -212,6 +285,21 @@ export const AssistantCoachDashboard: React.FC = () => {
           )}
 
           <StudentGrid students={filteredStudents} onStudentClick={handleStudentClick} />
+        </div>
+
+        {/* Progressive Dashboard Features - Phase 6 (Scoped to Assigned Students) */}
+        <div className="dashboard-section">
+          <h2 className="section-title">Dashboard Overview</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+            {/* Fee Alerts (Assigned Students Only) */}
+            <FeeAlerts 
+              overdueFees={overdueFees} 
+              onViewDetails={() => navigate('/fees')}
+            />
+
+            {/* Recent Activity Feed (Assigned Students Only) */}
+            <RecentActivity activities={recentActivities} />
+          </div>
         </div>
       </div>
     </DashboardLayout>

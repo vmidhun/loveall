@@ -5,14 +5,21 @@ import StatCard from '../components/StatCard';
 import StudentGrid from '../components/StudentGrid';
 import SearchInput from '../components/SearchInput';
 import FilterBar from '../components/FilterBar';
+import FeeAlerts from '../components/FeeAlerts';
+import CoachWorkload from '../components/CoachWorkload';
+import RecentActivity from '../components/RecentActivity';
 import type { FilterValues } from '../components/FilterBar';
 import { useAuth } from '../contexts/AuthContext';
 import { calculateDashboardStats } from '../utils/dashboardUtils';
 import { isDueForAssessment, daysOverdue, getLastAssessment } from '../utils/reviewUtils';
+import { getOverdueFeesByStudent } from '../utils/feeUtils';
+import { generateActivityFeed, getCoachWorkloads } from '../utils/activityUtils';
 import STUDENTS_DATA from '../data/students.json';
 import USERS_DATA from '../data/users.json';
 import SKILL_ASSESSMENTS_DATA from '../data/skillAssessments.json';
-import type { Student, SkillAssessment } from '../types';
+import FEES_DATA from '../data/fees.json';
+import TRAINING_LOGS_DATA from '../data/trainingLogs.json';
+import type { Student, SkillAssessment, FeeRecord, TrainingLog, User } from '../types';
 import './HeadCoachDashboard.css';
 
 /**
@@ -39,6 +46,37 @@ const parseAssessments = (data: unknown): SkillAssessment[] => {
   return assessmentArray.map((a) => ({
     ...(a as unknown as SkillAssessment),
     recordedAt: new Date(a.recordedAt as string),
+  }));
+};
+
+// Parse fees with proper date types
+const parseFees = (data: unknown): FeeRecord[] => {
+  const feeArray = data as Array<Record<string, unknown>>;
+  return feeArray.map((f) => ({
+    ...(f as unknown as FeeRecord),
+    dueDate: new Date(f.dueDate as string),
+    paidDate: f.paidDate ? new Date(f.paidDate as string) : undefined,
+    createdAt: new Date(f.createdAt as string),
+    updatedAt: new Date(f.updatedAt as string),
+  }));
+};
+
+// Parse training logs with proper date types
+const parseTrainingLogs = (data: unknown): TrainingLog[] => {
+  const logArray = data as Array<Record<string, unknown>>;
+  return logArray.map((l) => ({
+    ...(l as unknown as TrainingLog),
+    recordedAt: new Date(l.recordedAt as string),
+  }));
+};
+
+// Parse users with proper date types
+const parseUsers = (data: unknown): User[] => {
+  const userArray = data as Array<Record<string, unknown>>;
+  return userArray.map((u) => ({
+    ...(u as unknown as User),
+    createdAt: new Date(u.createdAt as string),
+    lastActive: new Date(u.lastActive as string),
   }));
 };
 
@@ -122,6 +160,27 @@ export const HeadCoachDashboard: React.FC = () => {
   
   // Parse and memoize skill assessments data
   const assessments = useMemo(() => parseAssessments(SKILL_ASSESSMENTS_DATA), []);
+
+  // Parse and memoize fees data
+  const fees = useMemo(() => parseFees(FEES_DATA), []);
+
+  // Parse and memoize training logs data
+  const trainingLogs = useMemo(() => parseTrainingLogs(TRAINING_LOGS_DATA), []);
+
+  // Parse and memoize users data
+  const users = useMemo(() => parseUsers(USERS_DATA), []);
+
+  // Calculate overdue fees grouped by student
+  const overdueFees = useMemo(() => getOverdueFeesByStudent(fees, students), [fees, students]);
+
+  // Calculate coach workloads
+  const coachWorkloads = useMemo(() => getCoachWorkloads(students, users), [students, users]);
+
+  // Generate recent activity feed
+  const recentActivities = useMemo(
+    () => generateActivityFeed(assessments, trainingLogs, students, 10),
+    [assessments, trainingLogs, students]
+  );
 
   // Calculate review status for each student
   const studentReviewStatus = useMemo(() => {
@@ -271,6 +330,26 @@ export const HeadCoachDashboard: React.FC = () => {
             />
           </div>
         )}
+
+        {/* Progressive Dashboard Features - Phase 6 */}
+        <div className="dashboard-section">
+          <h2 className="section-title">Dashboard Overview</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+            {/* Fee Alerts */}
+            <FeeAlerts 
+              overdueFees={overdueFees} 
+              onViewDetails={() => navigate('/fees')}
+            />
+
+            {/* Coach Workload */}
+            <CoachWorkload workloads={coachWorkloads} />
+          </div>
+
+          {/* Recent Activity Feed - Full Width */}
+          <div className="mt-6">
+            <RecentActivity activities={recentActivities} />
+          </div>
+        </div>
 
         {/* Student Grid Section */}
         <div className="dashboard-section">

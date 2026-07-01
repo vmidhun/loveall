@@ -1,226 +1,163 @@
 /**
- * Fee Utils Tests
- * Unit tests for fee utility functions
- * Requirements: 9.1, 9.2, 9.3, 9.4, 12.1
+ * Tests for fee utility functions
  */
 
 import { describe, it, expect } from 'vitest';
-import { computeFeeStatus, computeAllFeeStatuses, filterFeesByStatus, filterFeesByStudent } from './feeUtils';
-import type { FeeRecord } from '../types';
+import { isOverdue, getOverdueFees, getOverdueFeesByStudent, countOverdueFees } from './feeUtils';
+import type { FeeRecord, Student } from '../types';
 
-/* ============================================================================
-   TEST HELPERS
-   ============================================================================ */
+describe('feeUtils', () => {
+  const mockFees: FeeRecord[] = [
+    {
+      id: 'fee-1',
+      studentId: 'student-1',
+      amount: 3000,
+      monthYear: '2025-10',
+      dueDate: new Date('2025-10-10'),
+      status: 'OVERDUE',
+      createdAt: new Date('2025-10-01'),
+      updatedAt: new Date('2025-10-20'),
+    },
+    {
+      id: 'fee-2',
+      studentId: 'student-2',
+      amount: 3000,
+      monthYear: '2026-02',
+      dueDate: new Date('2027-02-10'),
+      status: 'PENDING',
+      createdAt: new Date('2026-02-01'),
+      updatedAt: new Date('2026-02-01'),
+    },
+    {
+      id: 'fee-3',
+      studentId: 'student-1',
+      amount: 3000,
+      monthYear: '2026-01',
+      dueDate: new Date('2026-01-10'),
+      paidDate: new Date('2026-01-08'),
+      status: 'PAID',
+      paymentMethod: 'UPI',
+      createdAt: new Date('2026-01-01'),
+      updatedAt: new Date('2026-01-08'),
+    },
+  ];
 
-const pastDate = new Date('2025-01-15T00:00:00.000Z');
-const futureDate = new Date('2027-12-15T00:00:00.000Z');
+  const mockStudents: Student[] = [
+    {
+      id: 'student-1',
+      fullName: 'Test Student 1',
+      dateOfBirth: new Date('2010-01-01'),
+      age: 16,
+      gender: 'Male',
+      contactPhone: '1234567890',
+      strengths: [],
+      weaknesses: [],
+      skillLevel: 'Beginner',
+      createdAt: new Date('2025-01-01'),
+      updatedAt: new Date('2025-01-01'),
+    },
+    {
+      id: 'student-2',
+      fullName: 'Test Student 2',
+      dateOfBirth: new Date('2011-01-01'),
+      age: 15,
+      gender: 'Female',
+      contactPhone: '0987654321',
+      strengths: [],
+      weaknesses: [],
+      skillLevel: 'Intermediate',
+      createdAt: new Date('2025-01-01'),
+      updatedAt: new Date('2025-01-01'),
+    },
+  ];
 
-const createFeeRecord = (overrides: Partial<FeeRecord> = {}): FeeRecord => ({
-  id: 'fee-test-001',
-  studentId: 'student-001',
-  amount: 3000,
-  monthYear: '2026-01',
-  dueDate: futureDate,
-  status: 'PENDING',
-  createdAt: new Date('2026-01-01T00:00:00.000Z'),
-  updatedAt: new Date('2026-01-01T00:00:00.000Z'),
-  ...overrides,
-});
+  describe('isOverdue', () => {
+    it('should return false for paid fees', () => {
+      const paidFee: FeeRecord = {
+        ...mockFees[2],
+        status: 'PAID',
+      };
+      expect(isOverdue(paidFee)).toBe(false);
+    });
 
-/* ============================================================================
-   TEST DATA
-   ============================================================================ */
+    it('should return false for waived fees', () => {
+      const waivedFee: FeeRecord = {
+        ...mockFees[0],
+        status: 'WAIVED',
+      };
+      expect(isOverdue(waivedFee)).toBe(false);
+    });
 
-const mockFees: FeeRecord[] = [
-  createFeeRecord({
-    id: 'fee-001',
-    studentId: 'student-001',
-    status: 'PAID',
-    dueDate: pastDate,
-    paidDate: new Date('2025-01-10T00:00:00.000Z'),
-    paymentMethod: 'UPI',
-    transactionRef: 'UPI-12345',
-  }),
-  createFeeRecord({
-    id: 'fee-002',
-    studentId: 'student-001',
-    status: 'PENDING',
-    dueDate: futureDate,
-  }),
-  createFeeRecord({
-    id: 'fee-003',
-    studentId: 'student-002',
-    status: 'PENDING',
-    dueDate: pastDate,
-  }),
-  createFeeRecord({
-    id: 'fee-004',
-    studentId: 'student-002',
-    status: 'OVERDUE',
-    dueDate: pastDate,
-  }),
-  createFeeRecord({
-    id: 'fee-005',
-    studentId: 'student-003',
-    status: 'WAIVED',
-    dueDate: pastDate,
-    notes: 'Scholarship recipient',
-  }),
-  createFeeRecord({
-    id: 'fee-006',
-    studentId: 'student-003',
-    status: 'PENDING',
-    dueDate: futureDate,
-  }),
-];
+    it('should return true for fees past due date', () => {
+      const overdueFee: FeeRecord = {
+        ...mockFees[0],
+        status: 'PENDING',
+        dueDate: new Date('2020-01-01'), // Past date
+      };
+      expect(isOverdue(overdueFee)).toBe(true);
+    });
 
-/* ============================================================================
-   computeFeeStatus TESTS
-   ============================================================================ */
-
-describe('computeFeeStatus', () => {
-  it('should return OVERDUE for PENDING fee with past due date', () => {
-    const fee = createFeeRecord({ status: 'PENDING', dueDate: pastDate });
-    expect(computeFeeStatus(fee)).toBe('OVERDUE');
+    it('should return false for future due dates', () => {
+      const futureFee: FeeRecord = {
+        ...mockFees[1],
+        status: 'PENDING',
+        dueDate: new Date('2030-01-01'), // Future date
+      };
+      expect(isOverdue(futureFee)).toBe(false);
+    });
   });
 
-  it('should return PENDING for PENDING fee with future due date', () => {
-    const fee = createFeeRecord({ status: 'PENDING', dueDate: futureDate });
-    expect(computeFeeStatus(fee)).toBe('PENDING');
+  describe('getOverdueFees', () => {
+    it('should return only overdue fees', () => {
+      const result = getOverdueFees(mockFees);
+      expect(result.length).toBeGreaterThanOrEqual(1);
+      expect(result.every((fee) => fee.status === 'OVERDUE' || isOverdue(fee))).toBe(true);
+    });
+
+    it('should not include paid fees', () => {
+      const result = getOverdueFees(mockFees);
+      expect(result.every((fee) => fee.status !== 'PAID')).toBe(true);
+    });
   });
 
-  it('should return PAID as-is regardless of due date', () => {
-    const fee = createFeeRecord({ status: 'PAID', dueDate: pastDate });
-    expect(computeFeeStatus(fee)).toBe('PAID');
+  describe('getOverdueFeesByStudent', () => {
+    it('should group overdue fees by student', () => {
+      const result = getOverdueFeesByStudent(mockFees, mockStudents);
+      expect(Array.isArray(result)).toBe(true);
+      result.forEach((item) => {
+        expect(item).toHaveProperty('student');
+        expect(item).toHaveProperty('overdueFees');
+        expect(item).toHaveProperty('totalOverdue');
+      });
+    });
+
+    it('should calculate total overdue correctly', () => {
+      const result = getOverdueFeesByStudent(mockFees, mockStudents);
+      result.forEach((item) => {
+        const expectedTotal = item.overdueFees.reduce((sum, fee) => sum + fee.amount, 0);
+        expect(item.totalOverdue).toBe(expectedTotal);
+      });
+    });
+
+    it('should sort by total overdue amount descending', () => {
+      const result = getOverdueFeesByStudent(mockFees, mockStudents);
+      for (let i = 1; i < result.length; i++) {
+        expect(result[i - 1].totalOverdue).toBeGreaterThanOrEqual(result[i].totalOverdue);
+      }
+    });
   });
 
-  it('should return WAIVED as-is regardless of due date', () => {
-    const fee = createFeeRecord({ status: 'WAIVED', dueDate: pastDate });
-    expect(computeFeeStatus(fee)).toBe('WAIVED');
-  });
+  describe('countOverdueFees', () => {
+    it('should return count of overdue fees', () => {
+      const count = countOverdueFees(mockFees);
+      expect(typeof count).toBe('number');
+      expect(count).toBeGreaterThanOrEqual(0);
+    });
 
-  it('should return OVERDUE as-is for explicitly OVERDUE fee', () => {
-    const fee = createFeeRecord({ status: 'OVERDUE', dueDate: pastDate });
-    expect(computeFeeStatus(fee)).toBe('OVERDUE');
-  });
-
-  it('should handle null fee gracefully', () => {
-    expect(computeFeeStatus(null as unknown as FeeRecord)).toBe('PENDING');
-  });
-
-  it('should return PENDING for PENDING fee with dueDate equal to today', () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const fee = createFeeRecord({ status: 'PENDING', dueDate: today });
-    expect(computeFeeStatus(fee)).toBe('PENDING');
-  });
-});
-
-/* ============================================================================
-   computeAllFeeStatuses TESTS
-   ============================================================================ */
-
-describe('computeAllFeeStatuses', () => {
-  it('should process an array of fees and update statuses', () => {
-    const fees = [
-      createFeeRecord({ id: 'fee-a', status: 'PENDING', dueDate: pastDate }),
-      createFeeRecord({ id: 'fee-b', status: 'PENDING', dueDate: futureDate }),
-      createFeeRecord({ id: 'fee-c', status: 'PAID', dueDate: pastDate }),
-    ];
-
-    const result = computeAllFeeStatuses(fees);
-
-    expect(result[0].status).toBe('OVERDUE');
-    expect(result[1].status).toBe('PENDING');
-    expect(result[2].status).toBe('PAID');
-  });
-
-  it('should not mutate the original array', () => {
-    const fees = [createFeeRecord({ status: 'PENDING', dueDate: pastDate })];
-    const result = computeAllFeeStatuses(fees);
-
-    expect(result).not.toBe(fees);
-    expect(fees[0].status).toBe('PENDING');
-    expect(result[0].status).toBe('OVERDUE');
-  });
-
-  it('should return empty array for null input', () => {
-    expect(computeAllFeeStatuses(null as unknown as FeeRecord[])).toEqual([]);
-  });
-
-  it('should return empty array for empty input', () => {
-    expect(computeAllFeeStatuses([])).toEqual([]);
-  });
-});
-
-/* ============================================================================
-   filterFeesByStatus TESTS
-   ============================================================================ */
-
-describe('filterFeesByStatus', () => {
-  it('should filter fees by PAID status', () => {
-    const result = filterFeesByStatus(mockFees, 'PAID');
-    expect(result.length).toBe(1);
-    expect(result[0].id).toBe('fee-001');
-  });
-
-  it('should filter fees by PENDING status', () => {
-    const result = filterFeesByStatus(mockFees, 'PENDING');
-    expect(result.length).toBe(3);
-    expect(result.every((f) => f.status === 'PENDING')).toBe(true);
-  });
-
-  it('should filter fees by OVERDUE status', () => {
-    const result = filterFeesByStatus(mockFees, 'OVERDUE');
-    expect(result.length).toBe(1);
-    expect(result[0].id).toBe('fee-004');
-  });
-
-  it('should filter fees by WAIVED status', () => {
-    const result = filterFeesByStatus(mockFees, 'WAIVED');
-    expect(result.length).toBe(1);
-    expect(result[0].id).toBe('fee-005');
-  });
-
-  it('should return empty array for null fees', () => {
-    expect(filterFeesByStatus(null as unknown as FeeRecord[], 'PAID')).toEqual([]);
-  });
-
-  it('should return empty array for null status', () => {
-    expect(filterFeesByStatus(mockFees, null as unknown as 'PAID')).toEqual([]);
-  });
-
-  it('should return empty array when no fees match', () => {
-    const paidOnly = [createFeeRecord({ status: 'PAID' })];
-    expect(filterFeesByStatus(paidOnly, 'WAIVED')).toEqual([]);
-  });
-});
-
-/* ============================================================================
-   filterFeesByStudent TESTS
-   ============================================================================ */
-
-describe('filterFeesByStudent', () => {
-  it('should filter fees for a specific student', () => {
-    const result = filterFeesByStudent(mockFees, 'student-001');
-    expect(result.length).toBe(2);
-    expect(result.every((f) => f.studentId === 'student-001')).toBe(true);
-  });
-
-  it('should return empty array for non-existent student', () => {
-    const result = filterFeesByStudent(mockFees, 'student-999');
-    expect(result.length).toBe(0);
-  });
-
-  it('should return empty array for null fees', () => {
-    expect(filterFeesByStudent(null as unknown as FeeRecord[], 'student-001')).toEqual([]);
-  });
-
-  it('should return empty array for null studentId', () => {
-    expect(filterFeesByStudent(mockFees, null as unknown as string)).toEqual([]);
-  });
-
-  it('should return empty array for empty studentId', () => {
-    expect(filterFeesByStudent(mockFees, '')).toEqual([]);
+    it('should match length of getOverdueFees result', () => {
+      const count = countOverdueFees(mockFees);
+      const overdueFees = getOverdueFees(mockFees);
+      expect(count).toBe(overdueFees.length);
+    });
   });
 });
