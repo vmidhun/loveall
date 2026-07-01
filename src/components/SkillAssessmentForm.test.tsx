@@ -2,7 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { SkillAssessmentForm } from './SkillAssessmentForm';
 import { SkillScoreButton } from './SkillScoreButton';
-import { SKILL_CATEGORIES, SKILL_DEFINITIONS_STRUCTURED } from '../data/skillDefinitions';
+import { SKILL_DEFINITIONS_STRUCTURED } from '../data/skillDefinitions';
 import { generateCycleKey } from '../utils/skillUtils';
 import type { SkillAssessment, SkillScores } from '../types';
 

@@ -9,7 +9,7 @@ import { renderHook, act } from '@testing-library/react';
 import { useStudents } from './useStudents';
 import type { CreateStudentData } from './useStudents';
 
-const STORAGE_KEY = 'shuttlecoach_students';
+const STORAGE_KEY = 'loveall_students';
 
 const validStudentData: CreateStudentData = {
   fullName: 'Test Student',

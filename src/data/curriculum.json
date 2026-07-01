@@ -1,0 +1,850 @@
+[
+  {
+    "id": "curriculum-001",
+    "cycleKey": "Jan-Feb 2026",
+    "batchId": "batch-001",
+    "studentId": null,
+    "sourceBatchPlanId": null,
+    "weeks": [
+      {
+        "weekNumber": 1,
+        "focusArea": "Foundation - Grip and Basic Footwork",
+        "drills": [
+          {
+            "id": "drill-001",
+            "name": "Grip Practice",
+            "description": "Practice correct grip technique for forehand and backhand strokes",
+            "category": "Fundamentals"
+          },
+          {
+            "id": "drill-002",
+            "name": "Court Movement Patterns",
+            "description": "Basic footwork patterns covering all six court positions",
+            "category": "Footwork"
+          },
+          {
+            "id": "drill-003",
+            "name": "Shadow Practice",
+            "description": "Movement without shuttle focusing on footwork and body positioning",
+            "category": "Footwork"
+          }
+        ],
+        "objective": "Establish proper grip habits and develop basic court coverage skills"
+      },
+      {
+        "weekNumber": 2,
+        "focusArea": "Forehand Clear and Drop Technique",
+        "drills": [
+          {
+            "id": "drill-004",
+            "name": "High Clear Practice",
+            "description": "Repetitive forehand clear shots to baseline with focus on technique",
+            "category": "Stroke Practice"
+          },
+          {
+            "id": "drill-005",
+            "name": "Drop Shot Accuracy",
+            "description": "Forehand drop shots targeting net area with controlled power",
+            "category": "Stroke Practice"
+          },
+          {
+            "id": "drill-006",
+            "name": "Clear to Drop Combination",
+            "description": "Alternating between clear and drop shots to develop versatility",
+            "category": "Combination Drills"
+          }
+        ],
+        "objective": "Master forehand overhead strokes with control and accuracy"
+      },
+      {
+        "weekNumber": 3,
+        "focusArea": "Backhand Technique and Net Play",
+        "drills": [
+          {
+            "id": "drill-007",
+            "name": "Backhand Clear Drills",
+            "description": "Developing power and accuracy in backhand overhead clear",
+            "category": "Stroke Practice"
+          },
+          {
+            "id": "drill-008",
+            "name": "Net Shot Practice",
+            "description": "Forehand and backhand net shots with soft touch and precision",
+            "category": "Net Play"
+          },
+          {
+            "id": "drill-009",
+            "name": "Net Rush Drills",
+            "description": "Quick movement to net and recovery with proper technique",
+            "category": "Footwork"
+          }
+        ],
+        "objective": "Build backhand confidence and improve front court control"
+      },
+      {
+        "weekNumber": 4,
+        "focusArea": "Service and Return Fundamentals",
+        "drills": [
+          {
+            "id": "drill-010",
+            "name": "High Service Practice",
+            "description": "Consistent high service to backcourt with proper form",
+            "category": "Service"
+          },
+          {
+            "id": "drill-011",
+            "name": "Low Service Precision",
+            "description": "Short service landing just over net with minimal height",
+            "category": "Service"
+          },
+          {
+            "id": "drill-012",
+            "name": "Return Positioning",
+            "description": "Proper stance and return technique for various service types",
+            "category": "Return"
+          }
+        ],
+        "objective": "Develop consistent and strategic service skills with effective returns"
+      },
+      {
+        "weekNumber": 5,
+        "focusArea": "Smash Technique and Defense",
+        "drills": [
+          {
+            "id": "drill-013",
+            "name": "Smash Power Development",
+            "description": "Building explosive power in smash with proper body rotation",
+            "category": "Stroke Practice"
+          },
+          {
+            "id": "drill-014",
+            "name": "Defensive Lift Practice",
+            "description": "Returning smashes with controlled lifts to backcourt",
+            "category": "Defense"
+          },
+          {
+            "id": "drill-015",
+            "name": "Block and Counter",
+            "description": "Blocking smashes and transitioning to counter-attack",
+            "category": "Defense"
+          }
+        ],
+        "objective": "Improve attacking power and develop defensive resilience"
+      },
+      {
+        "weekNumber": 6,
+        "focusArea": "Rally Control and Shot Selection",
+        "drills": [
+          {
+            "id": "drill-016",
+            "name": "Sustained Rally Practice",
+            "description": "Maintaining rallies with focus on consistency and placement",
+            "category": "Rally"
+          },
+          {
+            "id": "drill-017",
+            "name": "Shot Variation Drills",
+            "description": "Mixing clears, drops, and drives to develop unpredictability",
+            "category": "Combination Drills"
+          },
+          {
+            "id": "drill-018",
+            "name": "Tempo Change Practice",
+            "description": "Controlling rally speed from slow build-up to fast exchanges",
+            "category": "Rally"
+          }
+        ],
+        "objective": "Master rally management with strategic shot selection and tempo control"
+      },
+      {
+        "weekNumber": 7,
+        "focusArea": "Game Simulation and Match Play",
+        "drills": [
+          {
+            "id": "drill-019",
+            "name": "Controlled Match Play",
+            "description": "Practice matches with specific tactical objectives",
+            "category": "Match Practice"
+          },
+          {
+            "id": "drill-020",
+            "name": "Pressure Situations",
+            "description": "Playing critical points with emphasis on mental composure",
+            "category": "Match Practice"
+          },
+          {
+            "id": "drill-021",
+            "name": "Score Management",
+            "description": "Strategic play based on score situations and momentum",
+            "category": "Strategy"
+          }
+        ],
+        "objective": "Apply technical skills in match scenarios with tactical awareness"
+      },
+      {
+        "weekNumber": 8,
+        "focusArea": "Assessment and Cycle Review",
+        "drills": [
+          {
+            "id": "drill-022",
+            "name": "Skills Assessment",
+            "description": "Formal evaluation of all stroke categories with scoring",
+            "category": "Assessment"
+          },
+          {
+            "id": "drill-023",
+            "name": "Weakness Targeting",
+            "description": "Focused practice on individual weaknesses identified during cycle",
+            "category": "Remedial"
+          },
+          {
+            "id": "drill-024",
+            "name": "Free Play and Feedback",
+            "description": "Open play sessions with coach observation and feedback",
+            "category": "Match Practice"
+          }
+        ],
+        "objective": "Complete cycle assessment and identify focus areas for next cycle"
+      }
+    ],
+    "createdAt": "2026-01-05T08:00:00Z",
+    "updatedAt": "2026-01-05T08:00:00Z",
+    "isArchived": false
+  },
+  {
+    "id": "curriculum-002",
+    "cycleKey": "Jan-Feb 2026",
+    "batchId": "batch-002",
+    "studentId": null,
+    "sourceBatchPlanId": null,
+    "weeks": [
+      {
+        "weekNumber": 1,
+        "focusArea": "Advanced Footwork and Court Coverage",
+        "drills": [
+          {
+            "id": "drill-025",
+            "name": "Multi-Directional Lunges",
+            "description": "Advanced footwork patterns with explosive directional changes",
+            "category": "Footwork"
+          },
+          {
+            "id": "drill-026",
+            "name": "Speed and Agility Drills",
+            "description": "Ladder drills and cone exercises for improved court speed",
+            "category": "Conditioning"
+          },
+          {
+            "id": "drill-027",
+            "name": "Recovery Step Practice",
+            "description": "Efficient return to center court after each shot",
+            "category": "Footwork"
+          }
+        ],
+        "objective": "Enhance court coverage speed and movement efficiency for competitive play"
+      },
+      {
+        "weekNumber": 2,
+        "focusArea": "Deceptive Shots and Slice Technique",
+        "drills": [
+          {
+            "id": "drill-028",
+            "name": "Slice Drop Mastery",
+            "description": "Cross-court and straight slice drops with deception",
+            "category": "Stroke Practice"
+          },
+          {
+            "id": "drill-029",
+            "name": "Reverse Slice Practice",
+            "description": "Using slice technique to disguise shot direction",
+            "category": "Stroke Practice"
+          },
+          {
+            "id": "drill-030",
+            "name": "Deceptive Service",
+            "description": "Varying service types with similar preparation",
+            "category": "Service"
+          }
+        ],
+        "objective": "Develop deceptive shot-making to create tactical advantages"
+      },
+      {
+        "weekNumber": 3,
+        "focusArea": "Attack Building and Kill Shots",
+        "drills": [
+          {
+            "id": "drill-031",
+            "name": "Attack Setup Sequences",
+            "description": "Creating attacking opportunities through shot placement",
+            "category": "Combination Drills"
+          },
+          {
+            "id": "drill-032",
+            "name": "Steep Smash Practice",
+            "description": "Developing sharp downward angle in smash execution",
+            "category": "Stroke Practice"
+          },
+          {
+            "id": "drill-033",
+            "name": "Net Kill Finish",
+            "description": "Aggressive net shots to finish rallies decisively",
+            "category": "Net Play"
+          }
+        ],
+        "objective": "Build attacking sequences that create winning opportunities"
+      },
+      {
+        "weekNumber": 4,
+        "focusArea": "Doubles Strategy and Rotation",
+        "drills": [
+          {
+            "id": "drill-034",
+            "name": "Front-Back Formation",
+            "description": "Coordinated movement in attacking formation",
+            "category": "Doubles"
+          },
+          {
+            "id": "drill-035",
+            "name": "Side-by-Side Defense",
+            "description": "Defensive positioning and coverage in doubles",
+            "category": "Doubles"
+          },
+          {
+            "id": "drill-036",
+            "name": "Rotation Drills",
+            "description": "Smooth transitions between offensive and defensive formations",
+            "category": "Doubles"
+          }
+        ],
+        "objective": "Master doubles formations and partner coordination"
+      },
+      {
+        "weekNumber": 5,
+        "focusArea": "Mental Toughness and Endurance",
+        "drills": [
+          {
+            "id": "drill-037",
+            "name": "Extended Rally Training",
+            "description": "Long rally practice building physical and mental stamina",
+            "category": "Conditioning"
+          },
+          {
+            "id": "drill-038",
+            "name": "Pressure Point Scenarios",
+            "description": "Playing critical match points repeatedly to build composure",
+            "category": "Match Practice"
+          },
+          {
+            "id": "drill-039",
+            "name": "Circuit Training",
+            "description": "High-intensity interval training specific to badminton movements",
+            "category": "Conditioning"
+          }
+        ],
+        "objective": "Develop mental resilience and physical endurance for competitive matches"
+      },
+      {
+        "weekNumber": 6,
+        "focusArea": "Advanced Net Play and Interception",
+        "drills": [
+          {
+            "id": "drill-040",
+            "name": "Net Duel Practice",
+            "description": "Quick exchanges at net requiring fast reflexes",
+            "category": "Net Play"
+          },
+          {
+            "id": "drill-041",
+            "name": "Interception Training",
+            "description": "Reading opponent's shots early and cutting off at net",
+            "category": "Net Play"
+          },
+          {
+            "id": "drill-042",
+            "name": "Tight Net Control",
+            "description": "Maintaining rally control with precise tumbling net shots",
+            "category": "Net Play"
+          }
+        ],
+        "objective": "Achieve dominance at net with quick reflexes and precise control"
+      },
+      {
+        "weekNumber": 7,
+        "focusArea": "Tournament Preparation and Strategy",
+        "drills": [
+          {
+            "id": "drill-043",
+            "name": "Opponent Analysis Practice",
+            "description": "Identifying and exploiting opponent weaknesses during play",
+            "category": "Strategy"
+          },
+          {
+            "id": "drill-044",
+            "name": "Game Plan Execution",
+            "description": "Following pre-match tactical plans with adjustments",
+            "category": "Match Practice"
+          },
+          {
+            "id": "drill-045",
+            "name": "Mock Tournament",
+            "description": "Round-robin format with match conditions and scoring",
+            "category": "Match Practice"
+          }
+        ],
+        "objective": "Prepare for competitive tournaments with strategic and tactical focus"
+      },
+      {
+        "weekNumber": 8,
+        "focusArea": "Performance Review and Goal Setting",
+        "drills": [
+          {
+            "id": "drill-046",
+            "name": "Comprehensive Skills Test",
+            "description": "Full assessment across all 60 skill categories",
+            "category": "Assessment"
+          },
+          {
+            "id": "drill-047",
+            "name": "Video Analysis Session",
+            "description": "Reviewing recorded matches to identify areas for improvement",
+            "category": "Analysis"
+          },
+          {
+            "id": "drill-048",
+            "name": "Individual Goal Planning",
+            "description": "Setting specific objectives for next training cycle",
+            "category": "Planning"
+          }
+        ],
+        "objective": "Complete performance evaluation and establish next cycle goals"
+      }
+    ],
+    "createdAt": "2026-01-05T08:30:00Z",
+    "updatedAt": "2026-01-05T08:30:00Z",
+    "isArchived": false
+  },
+  {
+    "id": "curriculum-003",
+    "cycleKey": "Jan-Feb 2026",
+    "batchId": null,
+    "studentId": "student-001",
+    "sourceBatchPlanId": "curriculum-001",
+    "weeks": [
+      {
+        "weekNumber": 1,
+        "focusArea": "Foundation - Grip and Basic Footwork",
+        "drills": [
+          {
+            "id": "drill-001",
+            "name": "Grip Practice",
+            "description": "Practice correct grip technique for forehand and backhand strokes",
+            "category": "Fundamentals"
+          },
+          {
+            "id": "drill-002",
+            "name": "Court Movement Patterns",
+            "description": "Basic footwork patterns covering all six court positions",
+            "category": "Footwork"
+          },
+          {
+            "id": "drill-003",
+            "name": "Shadow Practice",
+            "description": "Movement without shuttle focusing on footwork and body positioning",
+            "category": "Footwork"
+          }
+        ],
+        "objective": "Establish proper grip habits and develop basic court coverage skills"
+      },
+      {
+        "weekNumber": 2,
+        "focusArea": "Forehand Clear and Drop Technique - Extra Service Focus",
+        "drills": [
+          {
+            "id": "drill-004",
+            "name": "High Clear Practice",
+            "description": "Repetitive forehand clear shots to baseline with focus on technique",
+            "category": "Stroke Practice"
+          },
+          {
+            "id": "drill-005",
+            "name": "Drop Shot Accuracy",
+            "description": "Forehand drop shots targeting net area with controlled power",
+            "category": "Stroke Practice"
+          },
+          {
+            "id": "drill-049",
+            "name": "Service Consistency Drills",
+            "description": "Additional practice on service technique to address identified weakness",
+            "category": "Service"
+          }
+        ],
+        "objective": "Master forehand overhead strokes with control and improve service consistency"
+      },
+      {
+        "weekNumber": 3,
+        "focusArea": "Backhand Technique and Net Play",
+        "drills": [
+          {
+            "id": "drill-007",
+            "name": "Backhand Clear Drills",
+            "description": "Developing power and accuracy in backhand overhead clear",
+            "category": "Stroke Practice"
+          },
+          {
+            "id": "drill-008",
+            "name": "Net Shot Practice",
+            "description": "Forehand and backhand net shots with soft touch and precision",
+            "category": "Net Play"
+          },
+          {
+            "id": "drill-009",
+            "name": "Net Rush Drills",
+            "description": "Quick movement to net and recovery with proper technique",
+            "category": "Footwork"
+          }
+        ],
+        "objective": "Build backhand confidence and improve front court control"
+      },
+      {
+        "weekNumber": 4,
+        "focusArea": "Service and Return Fundamentals",
+        "drills": [
+          {
+            "id": "drill-010",
+            "name": "High Service Practice",
+            "description": "Consistent high service to backcourt with proper form",
+            "category": "Service"
+          },
+          {
+            "id": "drill-011",
+            "name": "Low Service Precision",
+            "description": "Short service landing just over net with minimal height",
+            "category": "Service"
+          },
+          {
+            "id": "drill-012",
+            "name": "Return Positioning",
+            "description": "Proper stance and return technique for various service types",
+            "category": "Return"
+          }
+        ],
+        "objective": "Develop consistent and strategic service skills with effective returns"
+      },
+      {
+        "weekNumber": 5,
+        "focusArea": "Smash Technique and Defense",
+        "drills": [
+          {
+            "id": "drill-013",
+            "name": "Smash Power Development",
+            "description": "Building explosive power in smash with proper body rotation",
+            "category": "Stroke Practice"
+          },
+          {
+            "id": "drill-014",
+            "name": "Defensive Lift Practice",
+            "description": "Returning smashes with controlled lifts to backcourt",
+            "category": "Defense"
+          },
+          {
+            "id": "drill-015",
+            "name": "Block and Counter",
+            "description": "Blocking smashes and transitioning to counter-attack",
+            "category": "Defense"
+          }
+        ],
+        "objective": "Improve attacking power and develop defensive resilience"
+      },
+      {
+        "weekNumber": 6,
+        "focusArea": "Rally Control and Shot Selection",
+        "drills": [
+          {
+            "id": "drill-016",
+            "name": "Sustained Rally Practice",
+            "description": "Maintaining rallies with focus on consistency and placement",
+            "category": "Rally"
+          },
+          {
+            "id": "drill-017",
+            "name": "Shot Variation Drills",
+            "description": "Mixing clears, drops, and drives to develop unpredictability",
+            "category": "Combination Drills"
+          },
+          {
+            "id": "drill-018",
+            "name": "Tempo Change Practice",
+            "description": "Controlling rally speed from slow build-up to fast exchanges",
+            "category": "Rally"
+          }
+        ],
+        "objective": "Master rally management with strategic shot selection and tempo control"
+      },
+      {
+        "weekNumber": 7,
+        "focusArea": "Game Simulation and Match Play",
+        "drills": [
+          {
+            "id": "drill-019",
+            "name": "Controlled Match Play",
+            "description": "Practice matches with specific tactical objectives",
+            "category": "Match Practice"
+          },
+          {
+            "id": "drill-020",
+            "name": "Pressure Situations",
+            "description": "Playing critical points with emphasis on mental composure",
+            "category": "Match Practice"
+          },
+          {
+            "id": "drill-021",
+            "name": "Score Management",
+            "description": "Strategic play based on score situations and momentum",
+            "category": "Strategy"
+          }
+        ],
+        "objective": "Apply technical skills in match scenarios with tactical awareness"
+      },
+      {
+        "weekNumber": 8,
+        "focusArea": "Assessment and Cycle Review",
+        "drills": [
+          {
+            "id": "drill-022",
+            "name": "Skills Assessment",
+            "description": "Formal evaluation of all stroke categories with scoring",
+            "category": "Assessment"
+          },
+          {
+            "id": "drill-023",
+            "name": "Weakness Targeting",
+            "description": "Focused practice on individual weaknesses identified during cycle",
+            "category": "Remedial"
+          },
+          {
+            "id": "drill-024",
+            "name": "Free Play and Feedback",
+            "description": "Open play sessions with coach observation and feedback",
+            "category": "Match Practice"
+          }
+        ],
+        "objective": "Complete cycle assessment and identify focus areas for next cycle"
+      }
+    ],
+    "createdAt": "2026-01-06T09:00:00Z",
+    "updatedAt": "2026-01-10T14:30:00Z",
+    "isArchived": false
+  },
+  {
+    "id": "curriculum-004",
+    "cycleKey": "Jan-Feb 2026",
+    "batchId": null,
+    "studentId": "student-005",
+    "sourceBatchPlanId": null,
+    "weeks": [
+      {
+        "weekNumber": 1,
+        "focusArea": "Tournament Preparation - Mental Game",
+        "drills": [
+          {
+            "id": "drill-050",
+            "name": "Visualization Practice",
+            "description": "Mental imagery of match scenarios and successful execution",
+            "category": "Mental Training"
+          },
+          {
+            "id": "drill-051",
+            "name": "Pressure Simulation",
+            "description": "High-stakes match situations to build composure",
+            "category": "Match Practice"
+          },
+          {
+            "id": "drill-052",
+            "name": "Pre-Match Routine",
+            "description": "Establishing consistent preparation rituals",
+            "category": "Mental Training"
+          }
+        ],
+        "objective": "Strengthen mental preparation and competitive mindset for tournaments"
+      },
+      {
+        "weekNumber": 2,
+        "focusArea": "Consistency Under Pressure",
+        "drills": [
+          {
+            "id": "drill-053",
+            "name": "Error Reduction Drills",
+            "description": "Focus on minimizing unforced errors during rallies",
+            "category": "Rally"
+          },
+          {
+            "id": "drill-054",
+            "name": "Clutch Point Practice",
+            "description": "Repeatedly playing game point scenarios",
+            "category": "Match Practice"
+          },
+          {
+            "id": "drill-055",
+            "name": "Shot Selection Discipline",
+            "description": "Making smart shot choices under pressure",
+            "category": "Strategy"
+          }
+        ],
+        "objective": "Maintain high performance consistency in critical match moments"
+      },
+      {
+        "weekNumber": 3,
+        "focusArea": "Advanced Tactical Variations",
+        "drills": [
+          {
+            "id": "drill-056",
+            "name": "Game Style Adaptation",
+            "description": "Adjusting tactics based on opponent playing style",
+            "category": "Strategy"
+          },
+          {
+            "id": "drill-057",
+            "name": "Pattern Breaking",
+            "description": "Disrupting opponent's rhythm with unexpected shots",
+            "category": "Strategy"
+          },
+          {
+            "id": "drill-058",
+            "name": "Court Geometry Mastery",
+            "description": "Using angles and spacing to create openings",
+            "category": "Strategy"
+          }
+        ],
+        "objective": "Develop sophisticated tactical awareness for competitive advantage"
+      },
+      {
+        "weekNumber": 4,
+        "focusArea": "Doubles Specialization",
+        "drills": [
+          {
+            "id": "drill-059",
+            "name": "Mixed Doubles Positioning",
+            "description": "Specialized formations for mixed doubles play",
+            "category": "Doubles"
+          },
+          {
+            "id": "drill-060",
+            "name": "Communication Drills",
+            "description": "Verbal and non-verbal partner coordination",
+            "category": "Doubles"
+          },
+          {
+            "id": "drill-061",
+            "name": "Poaching and Interception",
+            "description": "Aggressive net play in doubles format",
+            "category": "Doubles"
+          }
+        ],
+        "objective": "Refine doubles partnership and competitive doubles tactics"
+      },
+      {
+        "weekNumber": 5,
+        "focusArea": "Peak Physical Conditioning",
+        "drills": [
+          {
+            "id": "drill-062",
+            "name": "Explosive Power Training",
+            "description": "Plyometric exercises for jump and smash power",
+            "category": "Conditioning"
+          },
+          {
+            "id": "drill-063",
+            "name": "Speed Endurance",
+            "description": "High-intensity repeated sprint training",
+            "category": "Conditioning"
+          },
+          {
+            "id": "drill-064",
+            "name": "Recovery Protocol",
+            "description": "Active recovery and injury prevention exercises",
+            "category": "Conditioning"
+          }
+        ],
+        "objective": "Optimize physical conditioning for tournament performance"
+      },
+      {
+        "weekNumber": 6,
+        "focusArea": "Match Strategy and Opponent Scouting",
+        "drills": [
+          {
+            "id": "drill-065",
+            "name": "Opponent Analysis",
+            "description": "Studying video footage and identifying patterns",
+            "category": "Analysis"
+          },
+          {
+            "id": "drill-066",
+            "name": "Tactical Counter-Plays",
+            "description": "Developing specific strategies against known opponents",
+            "category": "Strategy"
+          },
+          {
+            "id": "drill-067",
+            "name": "In-Match Adjustments",
+            "description": "Real-time tactical modifications during play",
+            "category": "Strategy"
+          }
+        ],
+        "objective": "Enhance strategic preparation and adaptability for competitive matches"
+      },
+      {
+        "weekNumber": 7,
+        "focusArea": "Tournament Simulation",
+        "drills": [
+          {
+            "id": "drill-068",
+            "name": "Multi-Match Day",
+            "description": "Playing multiple matches in sequence to simulate tournament schedule",
+            "category": "Match Practice"
+          },
+          {
+            "id": "drill-069",
+            "name": "Between-Match Recovery",
+            "description": "Managing energy and recovery during competition day",
+            "category": "Conditioning"
+          },
+          {
+            "id": "drill-070",
+            "name": "Final Round Pressure",
+            "description": "Simulating elimination rounds and finals",
+            "category": "Match Practice"
+          }
+        ],
+        "objective": "Experience full tournament conditions with physical and mental demands"
+      },
+      {
+        "weekNumber": 8,
+        "focusArea": "Fine-Tuning and Performance Optimization",
+        "drills": [
+          {
+            "id": "drill-071",
+            "name": "Personal Excellence Review",
+            "description": "Analyzing performance metrics and identifying micro-improvements",
+            "category": "Analysis"
+          },
+          {
+            "id": "drill-072",
+            "name": "Signature Shot Refinement",
+            "description": "Perfecting individual strengths and go-to shots",
+            "category": "Stroke Practice"
+          },
+          {
+            "id": "drill-073",
+            "name": "Competition Readiness Check",
+            "description": "Final assessment and confirmation of tournament readiness",
+            "category": "Assessment"
+          }
+        ],
+        "objective": "Achieve peak performance state and confirm tournament preparedness"
+      }
+    ],
+    "createdAt": "2026-01-09T10:00:00Z",
+    "updatedAt": "2026-01-09T10:00:00Z",
+    "isArchived": false
+  }
+]

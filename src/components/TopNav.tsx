@@ -59,7 +59,7 @@ export const TopNav: React.FC = () => {
       <div className="topnav-container">
         {/* Logo / Brand */}
         <Link to="/" className="topnav-logo">
-          <span className="logo-text">ShuttleCoach</span>
+          <span className="logo-text">LoveAll</span>
         </Link>
 
         {/* Navigation Links - Desktop */}

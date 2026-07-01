@@ -94,9 +94,11 @@ describe('SkillHistory', () => {
 
     render(<SkillHistory assessments={assessments} />);
     expect(screen.getByText('Jan-Feb 2026')).toBeInTheDocument();
-    expect(screen.getByText('Coach Rajan')).toBeInTheDocument();
-    // Date formatting depends on locale; check that a date string is present
-    expect(screen.getByText(/15/)).toBeInTheDocument();
+    
+    // Check audit info contains coach name and date
+    const auditInfo = screen.getByTestId('skill-history-audit-info');
+    expect(auditInfo.textContent).toContain('Coach Rajan');
+    expect(auditInfo.textContent).toContain('Feb 15, 2026');
   });
 
   it('opens read-only modal when clicking a past snapshot', () => {

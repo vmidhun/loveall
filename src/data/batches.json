@@ -1,0 +1,26 @@
+[
+  {
+    "id": "batch-001",
+    "name": "Morning Beginners",
+    "schedule": "Mon/Wed/Fri 6-7 AM",
+    "assignedCoachId": "user-002",
+    "studentCount": 4,
+    "createdAt": "2026-01-01T08:00:00Z"
+  },
+  {
+    "id": "batch-002",
+    "name": "Evening Intermediate",
+    "schedule": "Tue/Thu/Sat 5-6:30 PM",
+    "assignedCoachId": "user-003",
+    "studentCount": 3,
+    "createdAt": "2026-01-02T08:00:00Z"
+  },
+  {
+    "id": "batch-003",
+    "name": "Advanced Training",
+    "schedule": "Mon/Wed/Fri 7-8:30 PM",
+    "assignedCoachId": "user-003",
+    "studentCount": 3,
+    "createdAt": "2026-01-03T08:00:00Z"
+  }
+]

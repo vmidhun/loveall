@@ -1,29 +1,18 @@
 import React, { useState, useMemo } from 'react';
 import { SkillAssessmentForm } from './SkillAssessmentForm';
 import type { SkillAssessment } from '../types';
+import { formatAuditTimestamp } from '../utils/dateUtils';
 import './SkillHistory.css';
 
 /**
  * SkillHistory — Displays past bi-monthly cycle assessment snapshots in a list.
  * Clicking a past snapshot opens the full assessment in a read-only modal.
  *
- * Requirements: 8.8, 8.9, 7.8
+ * Requirements: 8.8, 8.9, 7.8, 16.3, 16.4
  */
 
 export interface SkillHistoryProps {
   assessments: SkillAssessment[];
-}
-
-/**
- * Formats a Date (or date-like string) to a readable string.
- */
-function formatDate(date: Date | string): string {
-  const d = typeof date === 'string' ? new Date(date) : date;
-  return d.toLocaleDateString('en-IN', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
 }
 
 export const SkillHistory: React.FC<SkillHistoryProps> = ({ assessments }) => {
@@ -71,8 +60,9 @@ export const SkillHistory: React.FC<SkillHistoryProps> = ({ assessments }) => {
             aria-label={`View assessment for ${assessment.cycleKey}`}
           >
             <span className="skill-history__cycle">{assessment.cycleKey}</span>
-            <span className="skill-history__date">{formatDate(assessment.recordedAt)}</span>
-            <span className="skill-history__recorder">{assessment.recordedBy}</span>
+            <span className="skill-history__audit-info" data-testid="skill-history-audit-info">
+              Last updated by {assessment.recordedBy} on {formatAuditTimestamp(assessment.recordedAt)}
+            </span>
           </button>
         ))}
       </div>

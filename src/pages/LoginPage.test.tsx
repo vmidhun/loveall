@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from '../contexts/AuthContext';
@@ -19,11 +19,6 @@ const LoginPageWithProviders = () => (
 );
 
 describe('LoginPage Component', () => {
-  beforeEach(() => {
-    // Clear localStorage before each test
-    localStorage.clear();
-  });
-
   describe('Form Rendering', () => {
     it('should render login form with username and password fields', () => {
       render(<LoginPageWithProviders />);
@@ -33,10 +28,10 @@ describe('LoginPage Component', () => {
       expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
     });
 
-    it('should render ShuttleCoach title and subtitle', () => {
+    it('should render LoveAll title and subtitle', () => {
       render(<LoginPageWithProviders />);
 
-      expect(screen.getByText('ShuttleCoach')).toBeInTheDocument();
+      expect(screen.getByText('LoveAll')).toBeInTheDocument();
       expect(screen.getByText('Badminton Training Management')).toBeInTheDocument();
     });
 
@@ -347,14 +342,14 @@ describe('LoginPage Component', () => {
     it('should render on small viewport (mobile)', () => {
       render(<LoginPageWithProviders />);
 
-      expect(screen.getByText('ShuttleCoach')).toBeInTheDocument();
+      expect(screen.getByText('LoveAll')).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
     });
 
     it('should render on large viewport (desktop)', () => {
       render(<LoginPageWithProviders />);
 
-      expect(screen.getByText('ShuttleCoach')).toBeInTheDocument();
+      expect(screen.getByText('LoveAll')).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
     });
   });

@@ -7,6 +7,7 @@ import { SkillRadarChart } from '../components/SkillRadarChart';
 import { TrendLineChart } from '../components/TrendLineChart';
 import { WeaknessTracker } from '../components/WeaknessTracker';
 import { SkillHistory } from '../components/SkillHistory';
+import { useAuth } from '../contexts/AuthContext';
 import STUDENTS_DATA from '../data/students.json';
 import type { Student, SkillScores, SkillAssessment } from '../types';
 import './StudentProfilePage.css';
@@ -15,7 +16,8 @@ import './StudentProfilePage.css';
  * StudentProfilePage
  * Displays a student's profile with a 3-tab layout: Profile, Training, Progress
  * Accepts student ID as route parameter and maintains active tab state in URL
- * Requirements: 5.6 (3-tab layout), 2.5 (navigate from student card)
+ * Access Control: Assistant coaches can only view students assigned to them
+ * Requirements: 5.6 (3-tab layout), 2.5 (navigate from student card), 3.4, 3.5 (access control)
  */
 
 type TabId = 'profile' | 'training' | 'progress';
@@ -70,6 +72,7 @@ const getSkillLevelColor = (skillLevel: string): string => {
 
 export const StudentProfilePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const { user, role } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -103,6 +106,28 @@ export const StudentProfilePage: React.FC = () => {
           <div className="profile-not-found">
             <h2>Student Not Found</h2>
             <p>The student with ID "{id}" could not be found.</p>
+            <button className="back-button" onClick={handleBack}>
+              ← Back to Dashboard
+            </button>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  // Access Control: Assistant coaches can only view students assigned to them
+  const hasAccess = role === 'HEAD_COACH' || student.assignedCoachId === user?.id;
+
+  if (!hasAccess) {
+    return (
+      <DashboardLayout>
+        <div className="student-profile-page">
+          <div className="profile-not-found">
+            <h2>Access Denied</h2>
+            <p>You do not have permission to view this student's profile.</p>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">
+              This student is not assigned to you. Please contact the Head Coach if you believe this is an error.
+            </p>
             <button className="back-button" onClick={handleBack}>
               ← Back to Dashboard
             </button>
@@ -148,6 +173,20 @@ export const StudentProfilePage: React.FC = () => {
                 </span>
               )}
             </div>
+          </div>
+          <div className="ml-auto flex items-center gap-3">
+            <button
+              onClick={() => navigate(`/training-log/${student.id}`)}
+              className="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-slate-100 font-semibold rounded-lg transition-colors"
+            >
+              Training Log
+            </button>
+            <button
+              onClick={() => navigate(`/curriculum/student/${student.id}`)}
+              className="px-4 py-2 bg-primary hover:bg-primary/90 text-slate-900 font-semibold rounded-lg transition-colors"
+            >
+              Manage Curriculum
+            </button>
           </div>
         </div>
 

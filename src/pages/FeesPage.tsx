@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 import FeeListTable from '../components/FeeListTable';
 import MarkPaidModal, { type PaymentFormData } from '../components/MarkPaidModal';
+import WaiveFeeModal from '../components/WaiveFeeModal';
 import { computeAllFeeStatuses } from '../utils/feeUtils';
 import type { FeeRecord, Student, FeeStatus } from '../types';
 import feesData from '../data/fees.json';
@@ -11,12 +12,13 @@ import studentsData from '../data/students.json';
  * FeesPage
  * Fee management dashboard for Head Coach and Assistant Coach
  * Displays fee statistics and list of all fee records with filtering and sorting
- * Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6
+ * Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 13.1, 13.2, 13.3, 13.4, 13.5
  */
 
 export const FeesPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<'all' | FeeStatus>('all');
   const [isMarkPaidModalOpen, setIsMarkPaidModalOpen] = useState(false);
+  const [isWaiveFeeModalOpen, setIsWaiveFeeModalOpen] = useState(false);
   const [selectedFeeId, setSelectedFeeId] = useState<string | null>(null);
   const [localFees, setLocalFees] = useState<FeeRecord[]>([]);
 
@@ -180,6 +182,43 @@ export const FeesPage: React.FC = () => {
     handleCloseMarkPaidModal();
   };
 
+  // Handler for opening waive fee modal
+  const handleWaiveFeeClick = (feeId: string) => {
+    setSelectedFeeId(feeId);
+    setIsWaiveFeeModalOpen(true);
+  };
+
+  // Handler for closing waive fee modal
+  const handleCloseWaiveFeeModal = () => {
+    setIsWaiveFeeModalOpen(false);
+    setSelectedFeeId(null);
+  };
+
+  // Handler for submitting fee waiver
+  const handleWaiveFeeSubmit = (reason: string) => {
+    if (!selectedFeeId) return;
+
+    // Find the fee to update
+    const feeIndex = fees.findIndex((fee) => fee.id === selectedFeeId);
+    if (feeIndex === -1) return;
+
+    // Create updated fee record with waived status
+    const updatedFee: FeeRecord = {
+      ...fees[feeIndex],
+      status: 'WAIVED',
+      notes: reason,
+      updatedAt: new Date(),
+    };
+
+    // Update local state with the new fee data
+    const updatedFees = [...fees];
+    updatedFees[feeIndex] = updatedFee;
+    setLocalFees(updatedFees);
+
+    // Close modal
+    handleCloseWaiveFeeModal();
+  };
+
   // Get selected fee details for modal
   const selectedFee = selectedFeeId ? fees.find((fee) => fee.id === selectedFeeId) : null;
   const selectedStudent = selectedFee
@@ -320,6 +359,7 @@ export const FeesPage: React.FC = () => {
           fees={filteredAndSortedFees}
           students={students}
           onMarkPaid={handleMarkPaidClick}
+          onWaive={handleWaiveFeeClick}
         />
 
         {/* Mark Paid Modal */}
@@ -327,6 +367,15 @@ export const FeesPage: React.FC = () => {
           isOpen={isMarkPaidModalOpen}
           onClose={handleCloseMarkPaidModal}
           onSubmit={handleMarkPaidSubmit}
+          studentName={selectedStudent?.fullName}
+          feeAmount={selectedFee?.amount}
+        />
+
+        {/* Waive Fee Modal */}
+        <WaiveFeeModal
+          isOpen={isWaiveFeeModalOpen}
+          onClose={handleCloseWaiveFeeModal}
+          onSubmit={handleWaiveFeeSubmit}
           studentName={selectedStudent?.fullName}
           feeAmount={selectedFee?.amount}
         />

@@ -5,11 +5,14 @@ import './StudentCard.css';
 /**
  * StudentCard Component
  * Displays a compact student card with avatar, name, batch, skill level, and progress bar
+ * Shows "due for review" badge when student needs bi-monthly assessment
  */
 
 interface StudentCardProps {
   student: Student;
   onClick?: () => void;
+  isDueForReview?: boolean;
+  daysOverdue?: number;
 }
 
 const getSkillLevelColor = (skillLevel: string): string => {
@@ -51,10 +54,22 @@ const getInitials = (name: string): string => {
     .slice(0, 2);
 };
 
-export const StudentCard: React.FC<StudentCardProps> = ({ student, onClick }) => {
+export const StudentCard: React.FC<StudentCardProps> = ({ 
+  student, 
+  onClick, 
+  isDueForReview = false,
+  daysOverdue = 0
+}) => {
   const skillColor = getSkillLevelColor(student.skillLevel);
   const progressValue = getSkillLevelProgress(student.skillLevel);
   const initials = getInitials(student.fullName);
+
+  const formatOverdueMessage = () => {
+    if (daysOverdue >= 9999) {
+      return 'Never assessed';
+    }
+    return `${daysOverdue} days overdue`;
+  };
 
   return (
     <div className="student-card" onClick={onClick} role="button" tabIndex={0}>
@@ -88,6 +103,14 @@ export const StudentCard: React.FC<StudentCardProps> = ({ student, onClick }) =>
           </div>
           <span className="progress-label">{progressValue}%</span>
         </div>
+
+        {/* Due for Review Badge */}
+        {isDueForReview && (
+          <div className="due-for-review-badge" title={`Assessment overdue: ${formatOverdueMessage()}`}>
+            <span className="due-icon">⚠️</span>
+            <span className="due-text">{formatOverdueMessage()}</span>
+          </div>
+        )}
       </div>
 
       {/* BAID Indicator */}

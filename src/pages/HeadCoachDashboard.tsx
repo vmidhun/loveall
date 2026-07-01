@@ -8,9 +8,11 @@ import FilterBar from '../components/FilterBar';
 import type { FilterValues } from '../components/FilterBar';
 import { useAuth } from '../contexts/AuthContext';
 import { calculateDashboardStats } from '../utils/dashboardUtils';
+import { isDueForAssessment, daysOverdue, getLastAssessment } from '../utils/reviewUtils';
 import STUDENTS_DATA from '../data/students.json';
 import USERS_DATA from '../data/users.json';
-import type { Student } from '../types';
+import SKILL_ASSESSMENTS_DATA from '../data/skillAssessments.json';
+import type { Student, SkillAssessment } from '../types';
 import './HeadCoachDashboard.css';
 
 /**
@@ -28,6 +30,15 @@ const parseStudents = (data: unknown): Student[] => {
     dateOfBirth: new Date(s.dateOfBirth as string),
     createdAt: new Date(s.createdAt as string),
     updatedAt: new Date(s.updatedAt as string),
+  }));
+};
+
+// Parse skill assessments with proper date types
+const parseAssessments = (data: unknown): SkillAssessment[] => {
+  const assessmentArray = data as Array<Record<string, unknown>>;
+  return assessmentArray.map((a) => ({
+    ...(a as unknown as SkillAssessment),
+    recordedAt: new Date(a.recordedAt as string),
   }));
 };
 
@@ -108,6 +119,36 @@ export const HeadCoachDashboard: React.FC = () => {
 
   // Parse and memoize students data
   const students = useMemo(() => parseStudents(STUDENTS_DATA), []);
+  
+  // Parse and memoize skill assessments data
+  const assessments = useMemo(() => parseAssessments(SKILL_ASSESSMENTS_DATA), []);
+
+  // Calculate review status for each student
+  const studentReviewStatus = useMemo(() => {
+    const statusMap = new Map<string, { isDue: boolean; daysOverdue: number }>();
+    
+    students.forEach((student) => {
+      const lastAssessment = getLastAssessment(assessments, student.id);
+      const lastAssessmentDate = lastAssessment?.recordedAt ?? null;
+      const isDue = isDueForAssessment(lastAssessmentDate);
+      const overdueDays = daysOverdue(lastAssessmentDate);
+      
+      statusMap.set(student.id, {
+        isDue,
+        daysOverdue: overdueDays,
+      });
+    });
+    
+    return statusMap;
+  }, [students, assessments]);
+
+  // Get students due for review
+  const studentsDueForReview = useMemo(() => {
+    return students.filter((student) => {
+      const status = studentReviewStatus.get(student.id);
+      return status?.isDue ?? false;
+    });
+  }, [students, studentReviewStatus]);
 
   // Calculate dashboard statistics (always based on full dataset)
   const stats = useMemo(() => calculateDashboardStats(students), [students]);
@@ -201,15 +242,35 @@ export const HeadCoachDashboard: React.FC = () => {
             variant="orange"
           />
 
-          {/* Average Progress */}
+          {/* Due for Review Count */}
           <StatCard
-            title="Avg Progress"
-            value={stats.averageProgress}
-            label={stats.averageProgressLabel.split('(')[1]?.slice(0, -1) || 'Level'}
-            icon={<ProgressIconSvg />}
-            variant="blue"
+            title="Due for Review"
+            value={studentsDueForReview.length}
+            label={`${studentsDueForReview.length} student${studentsDueForReview.length !== 1 ? 's' : ''} need assessment`}
+            icon={<ReviewIconSvg />}
+            variant={studentsDueForReview.length > 0 ? 'red' : 'green'}
           />
         </div>
+
+        {/* Students Due for Review Section */}
+        {studentsDueForReview.length > 0 && (
+          <div className="dashboard-section due-review-section">
+            <div className="section-header">
+              <h2 className="section-title">
+                Students Due for Review ({studentsDueForReview.length})
+              </h2>
+              <p className="section-subtitle">
+                Students who need bi-monthly skill assessment (60+ days since last assessment)
+              </p>
+            </div>
+            
+            <StudentGrid 
+              students={studentsDueForReview} 
+              onStudentClick={handleStudentClick}
+              studentReviewStatus={studentReviewStatus}
+            />
+          </div>
+        )}
 
         {/* Student Grid Section */}
         <div className="dashboard-section">
@@ -233,7 +294,7 @@ export const HeadCoachDashboard: React.FC = () => {
             </p>
           )}
 
-          <StudentGrid students={filteredStudents} onStudentClick={handleStudentClick} />
+          <StudentGrid students={filteredStudents} onStudentClick={handleStudentClick} studentReviewStatus={studentReviewStatus} />
         </div>
       </div>
     </DashboardLayout>
@@ -267,10 +328,9 @@ const BatchIconSvg: React.FC = () => (
   </svg>
 );
 
-const ProgressIconSvg: React.FC = () => (
+const ReviewIconSvg: React.FC = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-    <polyline points="17 6 23 6 23 12"></polyline>
+    <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
   </svg>
 );
 

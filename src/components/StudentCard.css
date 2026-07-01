@@ -252,3 +252,36 @@
     color: var(--slate-600, #4a5662);
   }
 }
+
+/* Due for Review Badge */
+.due-for-review-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background-color: rgba(232, 57, 74, 0.15);
+  border: 1px solid rgba(232, 57, 74, 0.3);
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+.due-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.due-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: #e8394a;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Light mode support for due badge */
+@media (prefers-color-scheme: light) {
+  .due-for-review-badge {
+    background-color: rgba(232, 57, 74, 0.1);
+    border-color: rgba(232, 57, 74, 0.25);
+  }
+}

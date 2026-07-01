@@ -1,0 +1,136 @@
+/**
+ * Activity feed utility functions
+ * Helper functions for generating recent activity feed
+ */
+
+import type { Student, SkillAssessment, TrainingLog, User } from '../types';
+
+export type ActivityType = 'assessment' | 'training_log' | 'student_added';
+
+export interface Activity {
+  id: string;
+  type: ActivityType;
+  title: string;
+  description: string;
+  timestamp: Date;
+  coachName: string;
+  studentName?: string;
+}
+
+/**
+ * Generate activity feed from assessments, training logs, and students
+ */
+export function generateActivityFeed(
+  assessments: SkillAssessment[],
+  trainingLogs: TrainingLog[],
+  students: Student[],
+  limit: number = 10
+): Activity[] {
+  const activities: Activity[] = [];
+  
+  // Add skill assessments
+  assessments.forEach((assessment) => {
+    const student = students.find((s) => s.id === assessment.studentId);
+    if (student) {
+      activities.push({
+        id: `assessment-${assessment.id}`,
+        type: 'assessment',
+        title: 'Skill Assessment Recorded',
+        description: `${assessment.recordedBy} completed skill assessment for ${student.fullName} (${assessment.cycleKey})`,
+        timestamp: new Date(assessment.recordedAt),
+        coachName: assessment.recordedBy,
+        studentName: student.fullName,
+      });
+    }
+  });
+  
+  // Add training logs
+  trainingLogs.forEach((log) => {
+    const student = students.find((s) => s.id === log.studentId);
+    if (student) {
+      activities.push({
+        id: `log-${log.id}`,
+        type: 'training_log',
+        title: 'Training Log Added',
+        description: `${log.recordedBy} added Week ${log.weekNumber} training notes for ${student.fullName}`,
+        timestamp: new Date(log.recordedAt),
+        coachName: log.recordedBy,
+        studentName: student.fullName,
+      });
+    }
+  });
+  
+  // Add recent student additions (last 30 days)
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+  
+  students.forEach((student) => {
+    const createdAt = new Date(student.createdAt);
+    if (createdAt > thirtyDaysAgo) {
+      // Find the coach who likely added the student
+      const coach = student.assignedCoachId 
+        ? `Coach ${student.assignedCoachId.split('-')[1]}`
+        : 'System';
+      
+      activities.push({
+        id: `student-${student.id}`,
+        type: 'student_added',
+        title: 'New Student Added',
+        description: `${student.fullName} joined ${student.batchId ? `Batch ${student.batchId.split('-')[1]}` : 'the academy'}`,
+        timestamp: createdAt,
+        coachName: coach,
+        studentName: student.fullName,
+      });
+    }
+  });
+  
+  // Sort by timestamp (most recent first) and limit
+  return activities
+    .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+    .slice(0, limit);
+}
+
+/**
+ * Get coach workload statistics
+ */
+export interface CoachWorkload {
+  coachId: string;
+  coachName: string;
+  studentCount: number;
+  isOverloaded: boolean; // More than 10 students
+  isBalanced: boolean; // 5-10 students
+  isUnderloaded: boolean; // Less than 5 students
+}
+
+export function getCoachWorkloads(
+  students: Student[],
+  coaches: User[]
+): CoachWorkload[] {
+  // Count students per coach
+  const studentCounts = new Map<string, number>();
+  
+  students.forEach((student) => {
+    if (student.assignedCoachId) {
+      const current = studentCounts.get(student.assignedCoachId) || 0;
+      studentCounts.set(student.assignedCoachId, current + 1);
+    }
+  });
+  
+  // Map to workload objects
+  const workloads: CoachWorkload[] = coaches
+    .filter((coach) => coach.role === 'ASSISTANT_COACH' || coach.role === 'HEAD_COACH')
+    .map((coach) => {
+      const studentCount = studentCounts.get(coach.id) || 0;
+      return {
+        coachId: coach.id,
+        coachName: coach.name,
+        studentCount,
+        isOverloaded: studentCount > 10,
+        isBalanced: studentCount >= 5 && studentCount <= 10,
+        isUnderloaded: studentCount < 5 && studentCount > 0,
+      };
+    });
+  
+  // Sort by student count (descending)
+  return workloads.sort((a, b) => b.studentCount - a.studentCount);
+}

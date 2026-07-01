@@ -1,5 +1,5 @@
 /**
- * ShuttleCoach Application Type Definitions
+ * LoveAll Application Type Definitions
  * Core types for the entire application
  */
 
@@ -205,13 +205,19 @@ export interface FeeRecord {
    CURRICULUM TYPES
    ============================================================================ */
 
+/**
+ * Drill - Individual training exercise with description and category
+ */
 export interface Drill {
   id: string;
   name: string;
   description: string;
-  category: string;
+  category: string; // e.g., "Footwork", "Stroke Practice", "Service", "Net Play"
 }
 
+/**
+ * WeekPlan - Training plan for a specific week within an 8-week cycle
+ */
 export interface WeekPlan {
   weekNumber: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
   focusArea: string;
@@ -219,16 +225,24 @@ export interface WeekPlan {
   objective: string;
 }
 
+/**
+ * CurriculumPlan - 8-week training curriculum for a batch or individual student
+ * 
+ * CONSTRAINT: A plan must have EITHER batchId OR studentId, but NOT both.
+ * - Batch plans: batchId is set, studentId is null
+ * - Individual plans: studentId is set, batchId is null
+ * - sourceBatchPlanId: Set when an individual plan is copied from a batch plan
+ */
 export interface CurriculumPlan {
   id: string;
   cycleKey: string; // "Jan-Feb 2026"
-  batchId?: string;
-  studentId?: string;
-  sourceBatchPlanId?: string;
-  weeks: WeekPlan[];
+  batchId?: string; // Set for batch-level curriculum plans
+  studentId?: string; // Set for individual student curriculum plans
+  sourceBatchPlanId?: string; // Reference to batch plan if copied from one
+  weeks: WeekPlan[]; // Must contain exactly 8 WeekPlan entries
   createdAt: Date;
   updatedAt: Date;
-  isArchived: boolean;
+  isArchived: boolean; // true for past cycles
 }
 
 /* ============================================================================

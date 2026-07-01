@@ -15,7 +15,7 @@ import type { Student, Gender, SkillLevel } from '../types';
 import { calculateAge, calculateBMI } from '../utils/studentUtils';
 import initialStudentsData from '../data/students.json';
 
-const STORAGE_KEY = 'shuttlecoach_students';
+const STORAGE_KEY = 'loveall_students';
 
 export interface CreateStudentData {
   fullName: string;

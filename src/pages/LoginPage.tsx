@@ -130,7 +130,7 @@ export const LoginPage: React.FC = () => {
         <div className="login-card">
           {/* Header */}
           <div className="login-header">
-            <h1 className="login-title">ShuttleCoach</h1>
+            <h1 className="login-title">LoveAll</h1>
             <p className="login-subtitle">Badminton Training Management</p>
           </div>
 

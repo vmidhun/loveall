@@ -1,15 +1,8 @@
 import '@testing-library/jest-dom';
-import { afterEach, vi } from 'vitest';
+import { afterEach, beforeEach, vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
 
-// Cleanup after each test
-afterEach(() => {
-  cleanup();
-  localStorage.clear();
-  vi.clearAllMocks();
-});
-
-// Mock localStorage
+// Mock localStorage before tests run
 const localStorageMock = (() => {
   let store: Record<string, string> = {};
 
@@ -27,6 +20,18 @@ const localStorageMock = (() => {
   };
 })();
 
-Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock,
+// Define localStorage on globalThis for test environment
+if (typeof globalThis !== 'undefined') {
+  (globalThis as typeof globalThis & { localStorage: Storage }).localStorage = localStorageMock as Storage;
+}
+
+// Setup before each test
+beforeEach(() => {
+  localStorage.clear();
+  vi.clearAllMocks();
+});
+
+// Cleanup after each test
+afterEach(() => {
+  cleanup();
 });

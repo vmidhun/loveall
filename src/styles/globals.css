@@ -556,3 +556,155 @@ body.dark ::-webkit-scrollbar-thumb:hover {
     border: 2px solid currentColor;
   }
 }
+
+
+/* ============================================================================
+   CONSISTENT CONTENT PADDING & SPACING
+   ============================================================================ */
+
+/* Page containers - consistent padding across all pages */
+.page-container {
+  padding: 40px 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Card/Section padding - consistent for all card-like elements */
+.card-padding {
+  padding: 24px;
+}
+
+.card-padding-sm {
+  padding: 16px;
+}
+
+.card-padding-lg {
+  padding: 32px;
+}
+
+/* Form sections */
+.form-section {
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+/* List items */
+.list-item-padding {
+  padding: 16px 20px;
+}
+
+/* Responsive adjustments for page containers */
+@media (max-width: 1024px) {
+  .page-container {
+    padding: 32px 24px;
+  }
+  
+  .card-padding {
+    padding: 20px;
+  }
+  
+  .form-section {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    padding: 24px 20px;
+  }
+  
+  .card-padding {
+    padding: 16px;
+  }
+  
+  .card-padding-lg {
+    padding: 24px;
+  }
+  
+  .form-section {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .list-item-padding {
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-container {
+    padding: 20px 16px;
+  }
+  
+  .card-padding {
+    padding: 16px;
+  }
+  
+  .card-padding-sm {
+    padding: 12px;
+  }
+  
+  .card-padding-lg {
+    padding: 20px;
+  }
+  
+  .form-section {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .list-item-padding {
+    padding: 12px 16px;
+  }
+}
+
+/* Button padding - consistent across all buttons */
+.btn-padding {
+  padding: 12px 24px;
+}
+
+.btn-padding-sm {
+  padding: 8px 16px;
+}
+
+.btn-padding-lg {
+  padding: 16px 32px;
+}
+
+/* Input/Form field padding */
+.input-padding {
+  padding: 12px 16px;
+}
+
+.input-padding-sm {
+  padding: 8px 12px;
+}
+
+/* Modal padding */
+.modal-header-padding {
+  padding: 20px 24px;
+}
+
+.modal-body-padding {
+  padding: 24px;
+}
+
+.modal-footer-padding {
+  padding: 16px 24px;
+}
+
+@media (max-width: 768px) {
+  .modal-header-padding {
+    padding: 16px 20px;
+  }
+  
+  .modal-body-padding {
+    padding: 20px;
+  }
+  
+  .modal-footer-padding {
+    padding: 12px 20px;
+  }
+}

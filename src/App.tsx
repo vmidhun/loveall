@@ -1,18 +1,40 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LoginPage from './pages/LoginPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import HeadCoachDashboard from './pages/HeadCoachDashboard';
+import AssistantCoachDashboard from './pages/AssistantCoachDashboard';
 import StudentsPage from './pages/StudentsPage';
 import FeesPage from './pages/FeesPage';
 import CoachesPage from './pages/CoachesPage';
-import CurriculumPage from './pages/CurriculumPage';
+import CurriculumBuilderPage from './pages/CurriculumBuilderPage';
+import IndividualCurriculumPage from './pages/IndividualCurriculumPage';
+import TrainingLogPage from './pages/TrainingLogPage';
 import StudentDashboard from './pages/StudentDashboard';
 import StudentProfilePage from './pages/StudentProfilePage';
 import MyProgressPage from './pages/MyProgressPage';
 import MyFeesPage from './pages/MyFeesPage';
 import AccessDeniedPage from './pages/AccessDeniedPage';
 import './App.css';
+
+/**
+ * RoleDashboard Component
+ * Renders the appropriate dashboard based on user role
+ */
+const RoleDashboard: React.FC = () => {
+  const { role } = useAuth();
+  
+  if (role === 'HEAD_COACH') {
+    return <HeadCoachDashboard />;
+  }
+  
+  if (role === 'ASSISTANT_COACH') {
+    return <AssistantCoachDashboard />;
+  }
+  
+  // Fallback (shouldn't happen due to ProtectedRoute)
+  return <Navigate to="/access-denied" replace />;
+};
 
 /**
  * App Component
@@ -32,7 +54,7 @@ function App() {
             path="/dashboard"
             element={
               <ProtectedRoute allowedRoles={['HEAD_COACH', 'ASSISTANT_COACH']}>
-                <HeadCoachDashboard />
+                <RoleDashboard />
               </ProtectedRoute>
             }
           />
@@ -58,8 +80,17 @@ function App() {
           <Route
             path="/curriculum"
             element={
+              <ProtectedRoute allowedRoles={['HEAD_COACH']}>
+                <CurriculumBuilderPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/curriculum/student/:studentId"
+            element={
               <ProtectedRoute allowedRoles={['HEAD_COACH', 'ASSISTANT_COACH']}>
-                <CurriculumPage />
+                <IndividualCurriculumPage />
               </ProtectedRoute>
             }
           />
@@ -70,6 +101,16 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['HEAD_COACH', 'ASSISTANT_COACH']}>
                 <StudentProfilePage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Training Log (accessible by coaches) */}
+          <Route
+            path="/training-log/:studentId"
+            element={
+              <ProtectedRoute allowedRoles={['HEAD_COACH', 'ASSISTANT_COACH']}>
+                <TrainingLogPage />
               </ProtectedRoute>
             }
           />

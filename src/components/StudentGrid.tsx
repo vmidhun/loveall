@@ -12,9 +12,14 @@ import './StudentGrid.css';
 interface StudentGridProps {
   students: Student[];
   onStudentClick?: (studentId: string) => void;
+  studentReviewStatus?: Map<string, { isDue: boolean; daysOverdue: number }>;
 }
 
-export const StudentGrid: React.FC<StudentGridProps> = ({ students, onStudentClick }) => {
+export const StudentGrid: React.FC<StudentGridProps> = ({ 
+  students, 
+  onStudentClick,
+  studentReviewStatus = new Map()
+}) => {
   if (!students || students.length === 0) {
     return (
       <div className="student-grid-empty">
@@ -29,14 +34,19 @@ export const StudentGrid: React.FC<StudentGridProps> = ({ students, onStudentCli
 
   return (
     <div className="student-grid">
-      {students.map((student) => (
-        <div key={student.id} className="student-grid-item">
-          <StudentCard
-            student={student}
-            onClick={() => onStudentClick?.(student.id)}
-          />
-        </div>
-      ))}
+      {students.map((student) => {
+        const reviewStatus = studentReviewStatus.get(student.id);
+        return (
+          <div key={student.id} className="student-grid-item">
+            <StudentCard
+              student={student}
+              onClick={() => onStudentClick?.(student.id)}
+              isDueForReview={reviewStatus?.isDue ?? false}
+              daysOverdue={reviewStatus?.daysOverdue ?? 0}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 };

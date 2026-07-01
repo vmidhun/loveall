@@ -1,5 +1,5 @@
 /**
- * Skill Definitions for ShuttleCoach
+ * Skill Definitions for LoveAll
  * 60 unique skills distributed across 6 categories (10 per category)
  *
  * Requirements: 6.1, 6.2, 6.3, 6.4

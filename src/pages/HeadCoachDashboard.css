@@ -140,3 +140,36 @@
     color: var(--slate-600, #4a5662);
   }
 }
+
+/* Due for Review Section */
+.due-review-section {
+  padding: 24px;
+  background-color: rgba(232, 57, 74, 0.05);
+  border: 1px solid rgba(232, 57, 74, 0.2);
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.section-header {
+  margin-bottom: 20px;
+}
+
+.section-subtitle {
+  margin: 4px 0 0 0;
+  font-size: 14px;
+  color: var(--slate-400, #9ca8b3);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .due-review-section {
+    padding: 16px;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .due-review-section {
+    background-color: rgba(232, 57, 74, 0.03);
+    border-color: rgba(232, 57, 74, 0.15);
+  }
+}

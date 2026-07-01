@@ -27,9 +27,10 @@
 }
 
 .skill-history__card {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
   padding: 0.75rem 1rem;
   background: var(--card-bg, #ffffff);
   border: 1px solid var(--border-color, #e2e8f0);
@@ -55,17 +56,15 @@
 .skill-history__cycle {
   font-weight: 600;
   color: var(--text-primary, #1a1a2e);
+  font-size: 1rem;
 }
 
-.skill-history__date {
+.skill-history__audit-info {
   color: var(--text-secondary, #64748b);
-  text-align: center;
+  font-size: 0.85rem;
 }
 
-.skill-history__recorder {
-  color: var(--text-secondary, #64748b);
-  text-align: right;
-}
+/* Removed: .skill-history__date and .skill-history__recorder */
 
 /* ============================================================================
    Modal Overlay
@@ -166,17 +165,6 @@
    ============================================================================ */
 
 @media (max-width: 640px) {
-  .skill-history__card {
-    grid-template-columns: 1fr;
-    gap: 0.25rem;
-  }
-
-  .skill-history__date,
-  .skill-history__recorder {
-    text-align: left;
-    font-size: 0.8rem;
-  }
-
   .skill-history__modal-content {
     max-height: 90vh;
   }

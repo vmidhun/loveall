@@ -138,16 +138,16 @@ describe('TopNav Component', () => {
   });
 
   describe('Logo and Branding', () => {
-    it('should display ShuttleCoach logo', () => {
+    it('should display LoveAll logo', () => {
       renderTopNav(mockAuthContext);
 
-      expect(screen.getByText('ShuttleCoach')).toBeInTheDocument();
+      expect(screen.getByText('LoveAll')).toBeInTheDocument();
     });
 
     it('should have logo link to home', () => {
       renderTopNav(mockAuthContext);
 
-      const logoLink = screen.getByText('ShuttleCoach').closest('a');
+      const logoLink = screen.getByText('LoveAll').closest('a');
       expect(logoLink).toHaveAttribute('href', '/');
     });
   });

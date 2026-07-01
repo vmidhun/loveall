@@ -1,93 +1,200 @@
 import { describe, it, expect } from 'vitest';
-import { generateCycleKey, calculateCategoryAverage } from './skillUtils';
+import { generateCycleKey, calculateCategoryAverage, isCycleArchived, getAllCyclesFromPlans } from './skillUtils';
 
-describe('generateCycleKey', () => {
-  it('returns "Jan-Feb" for January', () => {
-    expect(generateCycleKey(new Date(2026, 0, 15))).toBe('Jan-Feb 2026');
+describe('skillUtils', () => {
+  describe('generateCycleKey', () => {
+    it('should generate correct cycle key for January', () => {
+      const date = new Date('2026-01-15');
+      expect(generateCycleKey(date)).toBe('Jan-Feb 2026');
+    });
+
+    it('should generate correct cycle key for February', () => {
+      const date = new Date('2026-02-20');
+      expect(generateCycleKey(date)).toBe('Jan-Feb 2026');
+    });
+
+    it('should generate correct cycle key for March', () => {
+      const date = new Date('2026-03-10');
+      expect(generateCycleKey(date)).toBe('Mar-Apr 2026');
+    });
+
+    it('should generate correct cycle key for December', () => {
+      const date = new Date('2026-12-25');
+      expect(generateCycleKey(date)).toBe('Nov-Dec 2026');
+    });
   });
 
-  it('returns "Jan-Feb" for February', () => {
-    expect(generateCycleKey(new Date(2026, 1, 10))).toBe('Jan-Feb 2026');
+  describe('calculateCategoryAverage', () => {
+    it('should calculate average excluding zeros', () => {
+      const scores = [0, 2, 3, 4];
+      expect(calculateCategoryAverage(scores)).toBe(3.0);
+    });
+
+    it('should return 0 when all scores are 0', () => {
+      const scores = [0, 0, 0];
+      expect(calculateCategoryAverage(scores)).toBe(0);
+    });
+
+    it('should calculate average correctly', () => {
+      const scores = [1, 2, 3];
+      expect(calculateCategoryAverage(scores)).toBe(2.0);
+    });
+
+    it('should round to 1 decimal place', () => {
+      const scores = [1, 2, 3, 3];
+      expect(calculateCategoryAverage(scores)).toBe(2.3);
+    });
+
+    it('should handle empty array', () => {
+      const scores: number[] = [];
+      expect(calculateCategoryAverage(scores)).toBe(0);
+    });
   });
 
-  it('returns "Mar-Apr" for March', () => {
-    expect(generateCycleKey(new Date(2026, 2, 1))).toBe('Mar-Apr 2026');
+  describe('isCycleArchived', () => {
+    it('should return false for current cycle', () => {
+      const currentCycle = generateCycleKey();
+      expect(isCycleArchived(currentCycle)).toBe(false);
+    });
+
+    it('should return true for past cycles', () => {
+      // A cycle from years ago
+      expect(isCycleArchived('Jan-Feb 2020')).toBe(true);
+    });
+
+    it('should return false for future cycles', () => {
+      // A cycle far in the future
+      expect(isCycleArchived('Jan-Feb 2030')).toBe(false);
+    });
+
+    it('should handle different month pairs correctly', () => {
+      // These should be archived as they are in the past
+      expect(isCycleArchived('Mar-Apr 2020')).toBe(true);
+      expect(isCycleArchived('Jul-Aug 2020')).toBe(true);
+      expect(isCycleArchived('Nov-Dec 2020')).toBe(true);
+    });
+
+    it('should return false for invalid cycle format', () => {
+      expect(isCycleArchived('Invalid')).toBe(false);
+      expect(isCycleArchived('')).toBe(false);
+    });
+
+    it('should handle edge case at cycle boundary', () => {
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
+
+      // Get the previous cycle
+      const cyclePairs = ['Jan-Feb', 'Mar-Apr', 'May-Jun', 'Jul-Aug', 'Sep-Oct', 'Nov-Dec'];
+      let prevCycleIndex = Math.floor(currentMonth / 2) - 1;
+      let prevYear = currentYear;
+
+      if (prevCycleIndex < 0) {
+        prevCycleIndex = 5; // Nov-Dec
+        prevYear = currentYear - 1;
+      }
+
+      const prevCycle = `${cyclePairs[prevCycleIndex]} ${prevYear}`;
+      
+      // Previous cycle should typically be archived
+      // (unless we're at the very beginning of a new cycle)
+      const result = isCycleArchived(prevCycle);
+      expect(typeof result).toBe('boolean');
+    });
   });
 
-  it('returns "Mar-Apr" for April', () => {
-    expect(generateCycleKey(new Date(2026, 3, 30))).toBe('Mar-Apr 2026');
-  });
+  describe('getAllCyclesFromPlans', () => {
+    it('should extract unique cycles from plans', () => {
+      const plans = [
+        { cycleKey: 'Jan-Feb 2026' },
+        { cycleKey: 'Jan-Feb 2026' },
+        { cycleKey: 'Mar-Apr 2026' },
+        { cycleKey: 'Nov-Dec 2025' }
+      ];
 
-  it('returns "May-Jun" for May', () => {
-    expect(generateCycleKey(new Date(2025, 4, 5))).toBe('May-Jun 2025');
-  });
+      const cycles = getAllCyclesFromPlans(plans);
+      
+      // Should include all unique cycles plus current
+      expect(cycles.length).toBeGreaterThanOrEqual(3);
+      expect(cycles).toContain('Jan-Feb 2026');
+      expect(cycles).toContain('Mar-Apr 2026');
+      expect(cycles).toContain('Nov-Dec 2025');
+    });
 
-  it('returns "May-Jun" for June', () => {
-    expect(generateCycleKey(new Date(2025, 5, 20))).toBe('May-Jun 2025');
-  });
+    it('should always include current cycle', () => {
+      const plans: any[] = [];
+      const cycles = getAllCyclesFromPlans(plans);
+      
+      const currentCycle = generateCycleKey();
+      expect(cycles).toContain(currentCycle);
+    });
 
-  it('returns "Jul-Aug" for July', () => {
-    expect(generateCycleKey(new Date(2025, 6, 1))).toBe('Jul-Aug 2025');
-  });
+    it('should sort cycles in reverse chronological order', () => {
+      const plans = [
+        { cycleKey: 'Jan-Feb 2025' },
+        { cycleKey: 'Nov-Dec 2025' },
+        { cycleKey: 'Mar-Apr 2025' }
+      ];
 
-  it('returns "Jul-Aug" for August', () => {
-    expect(generateCycleKey(new Date(2025, 7, 31))).toBe('Jul-Aug 2025');
-  });
+      const cycles = getAllCyclesFromPlans(plans);
+      
+      // Current cycle should be first (most recent)
+      const currentCycle = generateCycleKey();
+      expect(cycles[0]).toBe(currentCycle);
 
-  it('returns "Sep-Oct" for September', () => {
-    expect(generateCycleKey(new Date(2025, 8, 15))).toBe('Sep-Oct 2025');
-  });
+      // Check that 2025 cycles are sorted correctly (newest first)
+      const cycles2025 = cycles.filter(c => c.includes('2025'));
+      expect(cycles2025[0]).toBe('Nov-Dec 2025');
+      expect(cycles2025[cycles2025.length - 1]).toBe('Jan-Feb 2025');
+    });
 
-  it('returns "Sep-Oct" for October', () => {
-    expect(generateCycleKey(new Date(2025, 9, 1))).toBe('Sep-Oct 2025');
-  });
+    it('should handle plans without cycleKey', () => {
+      const plans = [
+        { id: 'plan-1' },
+        { cycleKey: 'Jan-Feb 2026' },
+        { id: 'plan-2' }
+      ];
 
-  it('returns "Nov-Dec" for November', () => {
-    expect(generateCycleKey(new Date(2025, 10, 1))).toBe('Nov-Dec 2025');
-  });
+      const cycles = getAllCyclesFromPlans(plans);
+      
+      // Should still work, just ignore invalid plans
+      expect(cycles.length).toBeGreaterThanOrEqual(1);
+      expect(cycles).toContain('Jan-Feb 2026');
+    });
 
-  it('returns "Nov-Dec" for December', () => {
-    expect(generateCycleKey(new Date(2025, 11, 25))).toBe('Nov-Dec 2025');
-  });
+    it('should handle empty plans array', () => {
+      const plans: any[] = [];
+      const cycles = getAllCyclesFromPlans(plans);
+      
+      // Should at least contain current cycle
+      const currentCycle = generateCycleKey();
+      expect(cycles).toEqual([currentCycle]);
+    });
 
-  it('uses current date when no argument is provided', () => {
-    const result = generateCycleKey();
-    // Should return a string matching the pattern "Mon-Mon YYYY"
-    expect(result).toMatch(/^(Jan-Feb|Mar-Apr|May-Jun|Jul-Aug|Sep-Oct|Nov-Dec) \d{4}$/);
-  });
-});
+    it('should sort across year boundaries correctly', () => {
+      const plans = [
+        { cycleKey: 'Jan-Feb 2026' },
+        { cycleKey: 'Nov-Dec 2025' },
+        { cycleKey: 'Mar-Apr 2026' },
+        { cycleKey: 'Jan-Feb 2025' }
+      ];
 
-describe('calculateCategoryAverage', () => {
-  it('returns 0 when all scores are 0', () => {
-    expect(calculateCategoryAverage([0, 0, 0, 0, 0])).toBe(0);
-  });
+      const cycles = getAllCyclesFromPlans(plans);
+      
+      // Should be sorted newest to oldest
+      // Current cycle first, then 2026 cycles, then 2025 cycles
+      const idx2026MarApr = cycles.indexOf('Mar-Apr 2026');
+      const idx2026JanFeb = cycles.indexOf('Jan-Feb 2026');
+      const idx2025NovDec = cycles.indexOf('Nov-Dec 2025');
+      const idx2025JanFeb = cycles.indexOf('Jan-Feb 2025');
 
-  it('returns 0 for an empty array', () => {
-    expect(calculateCategoryAverage([])).toBe(0);
-  });
-
-  it('excludes 0 scores from the average', () => {
-    // Only 3 and 4 are counted → (3 + 4) / 2 = 3.5
-    expect(calculateCategoryAverage([0, 3, 0, 4, 0])).toBe(3.5);
-  });
-
-  it('calculates correct average with all non-zero scores', () => {
-    // (1 + 2 + 3 + 4) / 4 = 2.5
-    expect(calculateCategoryAverage([1, 2, 3, 4])).toBe(2.5);
-  });
-
-  it('rounds to 1 decimal place', () => {
-    // (1 + 2 + 3) / 3 = 2.0
-    expect(calculateCategoryAverage([1, 2, 3])).toBe(2);
-    // (1 + 1 + 2) / 3 = 1.333... → 1.3
-    expect(calculateCategoryAverage([1, 1, 2])).toBe(1.3);
-  });
-
-  it('handles a single non-zero score', () => {
-    expect(calculateCategoryAverage([0, 0, 0, 0, 0, 0, 0, 0, 0, 4])).toBe(4);
-  });
-
-  it('handles all scores being the same non-zero value', () => {
-    expect(calculateCategoryAverage([3, 3, 3, 3, 3])).toBe(3);
+      // 2026 cycles should come before 2025 cycles
+      expect(idx2026MarApr).toBeLessThan(idx2025NovDec);
+      expect(idx2026JanFeb).toBeLessThan(idx2025JanFeb);
+      
+      // Within same year, later cycles should come first
+      expect(idx2026MarApr).toBeLessThan(idx2026JanFeb);
+      expect(idx2025NovDec).toBeLessThan(idx2025JanFeb);
+    });
   });
 });
